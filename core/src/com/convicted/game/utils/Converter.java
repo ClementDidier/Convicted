@@ -14,5 +14,10 @@ public class Converter
         return Gdx.graphics.getHeight() - y;
     }
 
+    /**
+     * Converti un angle radian en degrees
+     * @param radian L'angle radian à convertir
+     * @return L'angle en degrées
+     */
     public static double convertRadianToDegree(double radian) { return radian * 180 / Math.PI; }
 }

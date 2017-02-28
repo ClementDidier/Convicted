@@ -1,4 +1,4 @@
-package com.convicted.game.widget;
+package com.convicted.game.ui.widget;
 
 public enum JoystickDirection
 {
