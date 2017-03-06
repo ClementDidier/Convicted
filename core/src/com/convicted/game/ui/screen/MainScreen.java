@@ -3,20 +3,19 @@ package com.convicted.game.ui.screen;
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.InputMultiplexer;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.convicted.game.ConvictedGame;
-import com.convicted.game.ui.widget.SampleJoystick;
+import com.convicted.game.ui.screen.effect.TransitionEffect;
 
-public class GameScreen extends AbstractScreen
+public class MainScreen extends AbstractScreen
 {
-    private SampleJoystick movementJoystick;
-    private SampleJoystick fireJoystick;
+    private Texture sprite;
 
-    public GameScreen(ConvictedGame game)
+    public MainScreen(ConvictedGame game)
     {
         super(game);
-        this.movementJoystick = new SampleJoystick(Gdx.graphics.getWidth() / 5, Gdx.graphics.getHeight() * 2 / 7);
-        this.fireJoystick = new SampleJoystick(Gdx.graphics.getWidth() * 4 / 5, Gdx.graphics.getHeight() * 2 / 7);
+        sprite = new Texture(Gdx.files.internal("badlogic.jpg"));
     }
 
     /**
@@ -25,10 +24,18 @@ public class GameScreen extends AbstractScreen
     @Override
     public void show()
     {
-        InputMultiplexer inputMultiplexer = new InputMultiplexer();
-        inputMultiplexer.addProcessor(this.movementJoystick.getProcessor());
-        inputMultiplexer.addProcessor(this.fireJoystick.getProcessor());
-        Gdx.input.setInputProcessor(inputMultiplexer);
+        final ConvictedGame game = this.getGame();
+        this.addAction(Actions.alpha(0, 3f));
+        this.addAction(Actions.delay(1,
+            Actions.run(new Runnable()
+            {
+                @Override
+                public void run()
+                {
+                    Gdx.app.log("Screen", "Navigator called");
+                    Navigator.navigateTo(game, Scene.GameScreen, TransitionEffect.FadeIn(), TransitionEffect.FadeOut());
+                }
+            })));
     }
 
     /**
@@ -48,8 +55,7 @@ public class GameScreen extends AbstractScreen
         super.draw();
         this.getBatch().begin();
         // TODO : Draw here
-        this.movementJoystick.draw(this.getBatch());
-        this.fireJoystick.draw(this.getBatch());
+        this.getBatch().draw(this.sprite, 100, 100);
         this.getBatch().end();
     }
 

@@ -1,9 +1,11 @@
 package com.convicted.game.ui.screen;
 
+import com.convicted.game.Convicted;
+
 public enum Scene
 {
-    GameScreen(new GameScreen());
-
+    GameScreen(new GameScreen(Convicted.getGame())),
+    MainScreen(new MainScreen(Convicted.getGame()));
 
     private AbstractScreen screen;
 

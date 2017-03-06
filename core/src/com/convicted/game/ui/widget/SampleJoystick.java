@@ -1,8 +1,10 @@
 package com.convicted.game.ui.widget;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
@@ -15,15 +17,17 @@ public class SampleJoystick extends Widget implements IJoystick, InputProcessor
     private final static int DEFAULT_RADIUS = 200;          // Taille par défaut du support joystick
     private final static int DEFAULT_INNER_RADIUS = 100;    // Taille par défaut du joystick
     private final static int DEAD_AREA = 500;               // Zone de fin de prise en main de la gesture
-    private final static int EFFECT_AREA = 200;             // Zone d'effet maximale du joystick
+    private final static int EFFECT_AREA = DEFAULT_RADIUS - DEFAULT_INNER_RADIUS;  // Zone d'effet maximale du joystick
     private final static int DEGREES = 360;
-    private final static int DIRECTIONS_COUNT = 8;          // Nombre de direction (Besoin de modifier JoystickDirection
-                                                            // si modification)
+    private final static int DIRECTIONS_COUNT = 8;          // Nombre de direction (Besoin de modifier JoystickDirection si modification)
+    private final static Color FOREGROUND_COLOR = Color.DARK_GRAY;
+    private final static Color INNER_FOREGROUND_COLOR = Color.GRAY;
+    private final static float OPACITY = 0.3f;
 
     private int radius, innerRadius;
-    private Boolean isUp;
     private ShapeRenderer renderer;
     private Vector2 joystickInnerPosition;
+    private int pointerID;
 
     public SampleJoystick(int x, int y)
     {
@@ -33,21 +37,25 @@ public class SampleJoystick extends Widget implements IJoystick, InputProcessor
         this.innerRadius = DEFAULT_INNER_RADIUS;
 
         this.joystickInnerPosition = new Vector2(x, y);
-        this.isUp = false;
         this.renderer = new ShapeRenderer();
+        this.pointerID = -1;
     }
 
     @Override
     public void draw(Batch batch)
     {
-        this.renderer.setProjectionMatrix(batch.getProjectionMatrix());
+        Gdx.gl.glEnable(GL20.GL_BLEND);
+        Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
 
+        this.renderer.setProjectionMatrix(batch.getProjectionMatrix());
         this.renderer.begin(ShapeRenderer.ShapeType.Filled);
-        this.renderer.setColor(Color.DARK_GRAY);
+        this.renderer.setColor(FOREGROUND_COLOR.r, FOREGROUND_COLOR.g, FOREGROUND_COLOR.b, batch.getColor().a/1f * OPACITY);
         this.renderer.circle(this.getOrigin().x, this.getOrigin().y, this.radius);
-        this.renderer.setColor(Color.GRAY);
+        this.renderer.setColor(INNER_FOREGROUND_COLOR.r, INNER_FOREGROUND_COLOR.g, INNER_FOREGROUND_COLOR.b, batch.getColor().a/1f * OPACITY);
         this.renderer.circle(this.joystickInnerPosition.x, this.joystickInnerPosition.y, this.innerRadius);
         this.renderer.end();
+
+        Gdx.gl.glDisable(GL20.GL_BLEND);
     }
 
     /**
@@ -128,6 +136,15 @@ public class SampleJoystick extends Widget implements IJoystick, InputProcessor
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button)
     {
+        Vector2 touchLocation = new Vector2(screenX, screenY);
+        float d = touchLocation.dst(this.getOrigin().x, this.getOrigin().y);
+
+        if(d < DEAD_AREA)
+        {
+            this.pointerID = pointer;
+            return true;
+        }
+
         return false;
     }
 
@@ -142,8 +159,12 @@ public class SampleJoystick extends Widget implements IJoystick, InputProcessor
     @Override
     public boolean touchUp(int screenX, int screenY, int pointer, int button)
     {
+        if(this.pointerID != pointer)
+            return false;
+
         this.joystickInnerPosition = this.getOrigin();
-        return false;
+        this.pointerID = -1;
+        return true;
     }
 
     /**
@@ -156,6 +177,11 @@ public class SampleJoystick extends Widget implements IJoystick, InputProcessor
     @Override
     public boolean touchDragged(int screenX, int screenY, int pointer)
     {
+        if(pointerID != pointer)
+            return false;
+
+        boolean handle = false;
+
         // Convertion de l'axe Y pour l'affichage
         screenY = convertTouchYAxis(screenY);
 
@@ -165,14 +191,19 @@ public class SampleJoystick extends Widget implements IJoystick, InputProcessor
         float d = touchLocation.dst(this.getOrigin().x, this.getOrigin().y);
 
         if(d < EFFECT_AREA)
+        {
+            handle = true;
             this.joystickInnerPosition = touchLocation;
+        }
         else if(d < DEAD_AREA)
-            this.joystickInnerPosition = new Vector2(
-                    (float)(Math.cos(angle) * this.radius) + this.getOrigin().x,
-                    (float)(Math.sin(angle) * this.radius) + this.getOrigin().y);
+        {
+            handle = true;
+            this.joystickInnerPosition = new Vector2((float) (Math.cos(angle) * this.EFFECT_AREA) + this.getOrigin().x, (float) (Math.sin(angle) * this.EFFECT_AREA) + this.getOrigin().y);
+        }
         else
             this.joystickInnerPosition = new Vector2(this.getOrigin().x, this.getOrigin().y);
-        return true;
+
+        return handle;
     }
 
     //region Keys
