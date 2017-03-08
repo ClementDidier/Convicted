@@ -1,6 +1,6 @@
 package com.convicted.game.entity;
 
-public abstract class Projectile implements IEntity
+public abstract class Projectile
 {
 
 }

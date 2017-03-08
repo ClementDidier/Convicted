@@ -4,19 +4,31 @@ import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
+import com.badlogic.gdx.graphics.Texture;
 import com.convicted.game.ConvictedGame;
+import com.convicted.game.action.PlayerController;
+import com.convicted.game.entity.Player;
 import com.convicted.game.ui.widget.SampleJoystick;
 
 public class GameScreen extends AbstractScreen
 {
     private SampleJoystick movementJoystick;
     private SampleJoystick fireJoystick;
+    private Player player;
 
     public GameScreen(ConvictedGame game)
     {
         super(game);
         this.movementJoystick = new SampleJoystick(Gdx.graphics.getWidth() / 5, Gdx.graphics.getHeight() * 2 / 7);
         this.fireJoystick = new SampleJoystick(Gdx.graphics.getWidth() * 4 / 5, Gdx.graphics.getHeight() * 2 / 7);
+
+        Texture texture = new Texture(Gdx.files.internal("angfat.png"));
+
+        this.player = new Player(texture);
+        PlayerController controller = new PlayerController(player, movementJoystick, fireJoystick);
+        player.setController(controller);
+
+        this.addActor(this.player);
     }
 
     /**
@@ -48,6 +60,7 @@ public class GameScreen extends AbstractScreen
         super.draw();
         this.getBatch().begin();
         // TODO : Draw here
+
         this.movementJoystick.draw(this.getBatch());
         this.fireJoystick.draw(this.getBatch());
         this.getBatch().end();

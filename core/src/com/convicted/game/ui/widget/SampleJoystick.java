@@ -121,7 +121,7 @@ public class SampleJoystick extends Widget implements IJoystick, InputProcessor
             return JoystickDirection.Top;
         }
 
-        return JoystickDirection.values()[index + 1];
+        return JoystickDirection.getDirections()[index + 1];
     }
 
     /**

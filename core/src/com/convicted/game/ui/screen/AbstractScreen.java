@@ -11,8 +11,6 @@ public abstract class AbstractScreen extends Stage implements com.badlogic.gdx.S
     private final static Color CLEAR_COLOR = new Color(Color.BLACK);
     private final ConvictedGame game;
 
-    public float alpha;
-
     public AbstractScreen(final ConvictedGame game)
     {
         this.game = game;
@@ -27,14 +25,6 @@ public abstract class AbstractScreen extends Stage implements com.badlogic.gdx.S
         this.act(delta);
 
         this.draw();
-
-
-    }
-
-    @Override
-    public void draw()
-    {
-        super.draw();
     }
 
     public final ConvictedGame getGame()
