@@ -1,28 +1,19 @@
 package com.convicted.game.ui.widget;
 
 import com.badlogic.gdx.InputProcessor;
-import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 
-public abstract class Widget
+public abstract class Widget extends Actor
 {
     private Vector2 origin;
 
     public Widget(int x, int y)
     {
-        this.origin = new Vector2(x, y);
+        this.setX(x);
+        this.setY(y);
     }
 
-    public Vector2 getOrigin()
-    {
-        return this.origin;
-    }
 
-    public void setOrigin(Vector2 origin)
-    {
-        this.origin = origin;
-    }
-
-    public abstract void draw(Batch batch);
     public abstract InputProcessor getProcessor();
 }

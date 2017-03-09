@@ -1,5 +1,6 @@
 package com.convicted.game.entity;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
@@ -13,8 +14,7 @@ public abstract class Character extends Actor
     private final static Direction DEFAULT_DIRECTION = Direction.Bottom;
     private final static int DEFAULT_ANIMATION_FRAME_INDEX = 0;
     private final static Vector2 SKIN_REGIONS = new Vector2(4, 4);
-    private final static float DEFAULT_SPEED = 30f;
-    private final static float SCALE = 2f;
+    private final static float DEFAULT_SPEED = 1f;
 
     private Direction direction;
     private int animationFrameIndex;
@@ -37,8 +37,8 @@ public abstract class Character extends Actor
                 this.direction.getIndex() * (int)this.spriteRegionSize.y,
                 (int)this.spriteRegionSize.x,
                 (int)this.spriteRegionSize.y);
-        this.sprite.setScale(SCALE);
         this.speed = DEFAULT_SPEED;
+        Gdx.app.log("Texture", texture.getWidth() + "; " + texture.getHeight());
     }
 
     private GameAction action;
@@ -88,10 +88,10 @@ public abstract class Character extends Actor
     {
         super.positionChanged();
         sprite.setPosition(getX(), getY());
-        this.sprite.setRegion(this.animationFrameIndex * (int)this.spriteRegionSize.x,
+        /*this.sprite.setRegion(this.animationFrameIndex * (int)this.spriteRegionSize.x,
                 this.direction.getIndex() * (int)this.spriteRegionSize.y,
                 (int)this.spriteRegionSize.x,
-                (int)this.spriteRegionSize.y);
+                (int)this.spriteRegionSize.y);*/
     }
 
     public void setController(EntityController controller)

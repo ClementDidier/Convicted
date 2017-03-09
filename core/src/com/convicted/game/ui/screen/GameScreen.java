@@ -27,8 +27,6 @@ public class GameScreen extends AbstractScreen
         this.player = new Player(texture);
         PlayerController controller = new PlayerController(player, movementJoystick, fireJoystick);
         player.setController(controller);
-
-        this.addActor(this.player);
     }
 
     /**
@@ -41,6 +39,10 @@ public class GameScreen extends AbstractScreen
         inputMultiplexer.addProcessor(this.movementJoystick.getProcessor());
         inputMultiplexer.addProcessor(this.fireJoystick.getProcessor());
         Gdx.input.setInputProcessor(inputMultiplexer);
+
+        this.addActor(this.movementJoystick);
+        this.addActor(this.fireJoystick);
+        this.addActor(this.player);
     }
 
     /**
@@ -61,8 +63,8 @@ public class GameScreen extends AbstractScreen
         this.getBatch().begin();
         // TODO : Draw here
 
-        this.movementJoystick.draw(this.getBatch());
-        this.fireJoystick.draw(this.getBatch());
+        //this.movementJoystick.draw(this.getBatch());
+        //this.fireJoystick.draw(this.getBatch());
         this.getBatch().end();
     }
 

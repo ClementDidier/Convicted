@@ -14,6 +14,8 @@ public abstract class AbstractScreen extends Stage implements com.badlogic.gdx.S
     public AbstractScreen(final ConvictedGame game)
     {
         this.game = game;
+        Gdx.app.log("Screen", Gdx.graphics.getWidth() + "; " + Gdx.graphics.getHeight());
+        Gdx.app.log("Viewport", this.getViewport().getScreenWidth() + "; " + this.getViewport().getScreenHeight());
     }
 
     @Override
@@ -22,9 +24,9 @@ public abstract class AbstractScreen extends Stage implements com.badlogic.gdx.S
         Gdx.gl.glClearColor(CLEAR_COLOR.r, CLEAR_COLOR.g, CLEAR_COLOR.b, CLEAR_COLOR.a);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-        this.act(delta);
+        super.act(delta);
 
-        this.draw();
+        super.draw();
     }
 
     public final ConvictedGame getGame()

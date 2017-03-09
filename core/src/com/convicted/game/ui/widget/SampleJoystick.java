@@ -42,7 +42,7 @@ public class SampleJoystick extends Widget implements IJoystick, InputProcessor
     }
 
     @Override
-    public void draw(Batch batch)
+    public void draw(Batch batch,  float parentAlpha)
     {
         Gdx.gl.glEnable(GL20.GL_BLEND);
         Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
@@ -50,7 +50,7 @@ public class SampleJoystick extends Widget implements IJoystick, InputProcessor
         this.renderer.setProjectionMatrix(batch.getProjectionMatrix());
         this.renderer.begin(ShapeRenderer.ShapeType.Filled);
         this.renderer.setColor(FOREGROUND_COLOR.r, FOREGROUND_COLOR.g, FOREGROUND_COLOR.b, batch.getColor().a/1f * OPACITY);
-        this.renderer.circle(this.getOrigin().x, this.getOrigin().y, this.radius);
+        this.renderer.circle(this.getX(), this.getY(), this.radius);
         this.renderer.setColor(INNER_FOREGROUND_COLOR.r, INNER_FOREGROUND_COLOR.g, INNER_FOREGROUND_COLOR.b, batch.getColor().a/1f * OPACITY);
         this.renderer.circle(this.joystickInnerPosition.x, this.joystickInnerPosition.y, this.innerRadius);
         this.renderer.end();
@@ -65,7 +65,7 @@ public class SampleJoystick extends Widget implements IJoystick, InputProcessor
      */
     private double getAngle(Vector2 vector)
     {
-        return Math.atan2(vector.x - this.getOrigin().x, vector.y - this.getOrigin().y);
+        return Math.atan2(vector.x - this.getX(), vector.y - this.getY());
     }
 
     /**
@@ -99,7 +99,7 @@ public class SampleJoystick extends Widget implements IJoystick, InputProcessor
     @Override
     public double getPushedValue()
     {
-        return this.joystickInnerPosition.dst(this.getOrigin().x, this.getOrigin().y) / EFFECT_AREA;
+        return this.joystickInnerPosition.dst(this.getX(), this.getY()) / EFFECT_AREA;
     }
 
     /**
@@ -137,7 +137,7 @@ public class SampleJoystick extends Widget implements IJoystick, InputProcessor
     public boolean touchDown(int screenX, int screenY, int pointer, int button)
     {
         Vector2 touchLocation = new Vector2(screenX, screenY);
-        float d = touchLocation.dst(this.getOrigin().x, this.getOrigin().y);
+        float d = touchLocation.dst(this.getX(), this.getY());
 
         if(d < DEAD_AREA)
         {
@@ -162,7 +162,8 @@ public class SampleJoystick extends Widget implements IJoystick, InputProcessor
         if(this.pointerID != pointer)
             return false;
 
-        this.joystickInnerPosition = this.getOrigin();
+        this.joystickInnerPosition.x = this.getX();
+        this.joystickInnerPosition.y = this.getY();
         this.pointerID = -1;
         return true;
     }
@@ -185,10 +186,10 @@ public class SampleJoystick extends Widget implements IJoystick, InputProcessor
         // Convertion de l'axe Y pour l'affichage
         screenY = convertTouchYAxis(screenY);
 
-        double angle = Math.atan2(screenY - this.getOrigin().y, screenX - this.getOrigin().x);
+        double angle = Math.atan2(screenY - this.getY(), screenX - this.getX());
 
         Vector2 touchLocation = new Vector2(screenX, screenY);
-        float d = touchLocation.dst(this.getOrigin().x, this.getOrigin().y);
+        float d = touchLocation.dst(this.getX(), this.getY());
 
         if(d < EFFECT_AREA)
         {
@@ -198,10 +199,15 @@ public class SampleJoystick extends Widget implements IJoystick, InputProcessor
         else if(d < DEAD_AREA)
         {
             handle = true;
-            this.joystickInnerPosition = new Vector2((float) (Math.cos(angle) * this.EFFECT_AREA) + this.getOrigin().x, (float) (Math.sin(angle) * this.EFFECT_AREA) + this.getOrigin().y);
+            this.joystickInnerPosition.x = (float) (Math.cos(angle) * this.EFFECT_AREA) + this.getX();
+            this.joystickInnerPosition.y = (float) (Math.sin(angle) * this.EFFECT_AREA) + this.getY();
         }
         else
-            this.joystickInnerPosition = new Vector2(this.getOrigin().x, this.getOrigin().y);
+        {
+            this.joystickInnerPosition.x = this.getX();
+            this.joystickInnerPosition.y = this.getY();
+        }
+
 
         return handle;
     }
