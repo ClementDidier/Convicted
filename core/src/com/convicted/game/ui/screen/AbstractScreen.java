@@ -11,6 +11,7 @@ import com.convicted.game.ConvictedGame;
 public abstract class AbstractScreen extends Stage implements com.badlogic.gdx.Screen
 {
     private final static Color CLEAR_COLOR = new Color(Color.WHITE);
+    private final static Vector2 VIEWPORT = new Vector2(1280, 720);
     private final ConvictedGame game;
 
     public AbstractScreen(final ConvictedGame game)
