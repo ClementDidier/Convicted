@@ -19,10 +19,10 @@ public class GameScreen extends AbstractScreen
     public GameScreen(ConvictedGame game)
     {
         super(game);
-        this.movementJoystick = new SampleJoystick(Gdx.graphics.getWidth() / 5, Gdx.graphics.getHeight() * 2 / 7);
-        this.fireJoystick = new SampleJoystick(Gdx.graphics.getWidth() * 4 / 5, Gdx.graphics.getHeight() * 2 / 7);
+        this.movementJoystick = new SampleJoystick((int)this.getViewport().getWorldWidth() / 5, (int)this.getViewport().getWorldHeight() * 2 / 7);
+        this.fireJoystick = new SampleJoystick((int)this.getViewport().getWorldWidth() * 4 / 5, (int)this.getViewport().getWorldHeight() * 2 / 7);
 
-        Texture texture = new Texture(Gdx.files.internal("angfat.png"));
+        Texture texture = new Texture(Gdx.files.internal("charset.png"));
 
         this.player = new Player(texture);
         PlayerController controller = new PlayerController(player, movementJoystick, fireJoystick);
@@ -40,9 +40,9 @@ public class GameScreen extends AbstractScreen
         inputMultiplexer.addProcessor(this.fireJoystick.getProcessor());
         Gdx.input.setInputProcessor(inputMultiplexer);
 
+        this.addActor(this.player);
         this.addActor(this.movementJoystick);
         this.addActor(this.fireJoystick);
-        this.addActor(this.player);
     }
 
     /**
@@ -59,13 +59,7 @@ public class GameScreen extends AbstractScreen
     @Override
     public void draw()
     {
-        super.draw();
-        this.getBatch().begin();
-        // TODO : Draw here
-
-        //this.movementJoystick.draw(this.getBatch());
-        //this.fireJoystick.draw(this.getBatch());
-        this.getBatch().end();
+        //super.draw();
     }
 
     /**
@@ -76,7 +70,7 @@ public class GameScreen extends AbstractScreen
     @Override
     public void resize(int width, int height)
     {
-
+        this.getViewport().update(width, height, true);
     }
 
     /**

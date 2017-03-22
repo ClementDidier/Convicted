@@ -5,16 +5,16 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.convicted.game.action.EntityController;
 import com.convicted.game.action.GameAction;
 
-public abstract class Character extends Actor
+public abstract class Character extends Image
 {
     private final static Direction DEFAULT_DIRECTION = Direction.Bottom;
     private final static int DEFAULT_ANIMATION_FRAME_INDEX = 0;
     private final static Vector2 SKIN_REGIONS = new Vector2(4, 4);
-    private final static float DEFAULT_SPEED = 1f;
+    private final static float DEFAULT_SPEED = 10f;
 
     private Direction direction;
     private int animationFrameIndex;
@@ -27,6 +27,7 @@ public abstract class Character extends Actor
 
     public Character(Texture texture)
     {
+        super();
         this.direction = DEFAULT_DIRECTION;
         this.animationFrameIndex = DEFAULT_ANIMATION_FRAME_INDEX;
         this.spriteRegionSize = new Vector2();
@@ -38,6 +39,7 @@ public abstract class Character extends Actor
                 (int)this.spriteRegionSize.x,
                 (int)this.spriteRegionSize.y);
         this.speed = DEFAULT_SPEED;
+        this.sprite.scale(2);
         Gdx.app.log("Texture", texture.getWidth() + "; " + texture.getHeight());
     }
 
@@ -86,7 +88,6 @@ public abstract class Character extends Actor
     @Override
     public void positionChanged()
     {
-        super.positionChanged();
         sprite.setPosition(getX(), getY());
         /*this.sprite.setRegion(this.animationFrameIndex * (int)this.spriteRegionSize.x,
                 this.direction.getIndex() * (int)this.spriteRegionSize.y,

@@ -3,19 +3,24 @@ package com.convicted.game.ui.screen;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.convicted.game.ConvictedGame;
 
 public abstract class AbstractScreen extends Stage implements com.badlogic.gdx.Screen
 {
-    private final static Color CLEAR_COLOR = new Color(Color.BLACK);
+    private final static Color CLEAR_COLOR = new Color(Color.WHITE);
     private final ConvictedGame game;
 
     public AbstractScreen(final ConvictedGame game)
     {
         this.game = game;
-        Gdx.app.log("Screen", Gdx.graphics.getWidth() + "; " + Gdx.graphics.getHeight());
-        Gdx.app.log("Viewport", this.getViewport().getScreenWidth() + "; " + this.getViewport().getScreenHeight());
+        FitViewport viewport = new FitViewport(VIEWPORT.x, VIEWPORT.y);
+
+        this.setViewport(viewport);
+        this.getViewport().update(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), true);
+        this.getViewport().apply();
     }
 
     @Override

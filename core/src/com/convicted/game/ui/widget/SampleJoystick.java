@@ -10,13 +10,12 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
 
 import static com.convicted.game.utils.Converter.convertRadianToDegree;
-import static com.convicted.game.utils.Converter.convertTouchYAxis;
 
 public class SampleJoystick extends Widget implements IJoystick, InputProcessor
 {
-    private final static int DEFAULT_RADIUS = 200;          // Taille par défaut du support joystick
-    private final static int DEFAULT_INNER_RADIUS = 100;    // Taille par défaut du joystick
-    private final static int DEAD_AREA = 500;               // Zone de fin de prise en main de la gesture
+    private final static int DEFAULT_RADIUS = 150;          // Taille par défaut du support joystick
+    private final static int DEFAULT_INNER_RADIUS = 75;    // Taille par défaut du joystick
+    private final static int DEAD_AREA = 300;               // Zone de fin de prise en main de la gesture
     private final static int EFFECT_AREA = DEFAULT_RADIUS - DEFAULT_INNER_RADIUS;  // Zone d'effet maximale du joystick
     private final static int DEGREES = 360;
     private final static int DIRECTIONS_COUNT = 8;          // Nombre de direction (Besoin de modifier JoystickDirection si modification)
@@ -44,6 +43,7 @@ public class SampleJoystick extends Widget implements IJoystick, InputProcessor
     @Override
     public void draw(Batch batch,  float parentAlpha)
     {
+        batch.end();
         Gdx.gl.glEnable(GL20.GL_BLEND);
         Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
 
@@ -56,6 +56,7 @@ public class SampleJoystick extends Widget implements IJoystick, InputProcessor
         this.renderer.end();
 
         Gdx.gl.glDisable(GL20.GL_BLEND);
+        batch.begin();
     }
 
     /**
@@ -136,8 +137,8 @@ public class SampleJoystick extends Widget implements IJoystick, InputProcessor
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button)
     {
-        Vector2 touchLocation = new Vector2(screenX, screenY);
-        float d = touchLocation.dst(this.getX(), this.getY());
+        Vector2 worldTouchLocation = this.localToStageCoordinates(this.screenToLocalCoordinates(new Vector2(screenX, screenY)));
+        float d = worldTouchLocation.dst(this.getX(), this.getY());
 
         if(d < DEAD_AREA)
         {
@@ -183,22 +184,18 @@ public class SampleJoystick extends Widget implements IJoystick, InputProcessor
 
         boolean handle = false;
 
-        // Convertion de l'axe Y pour l'affichage
-        screenY = convertTouchYAxis(screenY);
-
-        double angle = Math.atan2(screenY - this.getY(), screenX - this.getX());
-
-        Vector2 touchLocation = new Vector2(screenX, screenY);
-        float d = touchLocation.dst(this.getX(), this.getY());
+        Vector2 worldTouchLocation = this.localToStageCoordinates(this.screenToLocalCoordinates(new Vector2(screenX, screenY)));
+        float d = worldTouchLocation.dst(this.getX(), this.getY());
 
         if(d < EFFECT_AREA)
         {
             handle = true;
-            this.joystickInnerPosition = touchLocation;
+            this.joystickInnerPosition = worldTouchLocation;
         }
         else if(d < DEAD_AREA)
         {
             handle = true;
+            double angle = Math.atan2(worldTouchLocation.y - this.getY(), worldTouchLocation.x - this.getX());
             this.joystickInnerPosition.x = (float) (Math.cos(angle) * this.EFFECT_AREA) + this.getX();
             this.joystickInnerPosition.y = (float) (Math.sin(angle) * this.EFFECT_AREA) + this.getY();
         }

@@ -29,6 +29,9 @@ public class PlayerController extends EntityController
     @Override
     public GameAction consumeAction()
     {
+        if(this.action == GameAction.NONE)
+            return GameAction.NONE;
+
         GameAction act = this.action;
         this.action = GameAction.NONE; // Consume
         return act;
