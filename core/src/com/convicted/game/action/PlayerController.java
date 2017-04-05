@@ -20,10 +20,9 @@ public class PlayerController extends EntityController
     @Override
     public void act(float delta)
     {
-        // TODO: Eviter l'appel du new (Heap increase too quickly)
         this.action = new MoveAction(this.actor,
-                this.moveJoystick.getDirection().getX() * (float)this.moveJoystick.getPushedValue() * 10f,
-                this.moveJoystick.getDirection().getY() * (float)this.moveJoystick.getPushedValue() * 10f);
+                this.moveJoystick.getOrthogonalDirection().getX() * (float)this.moveJoystick.getPushedValue() * 10f,
+                this.moveJoystick.getOrthogonalDirection().getY() * (float)this.moveJoystick.getPushedValue() * 10f);
     }
 
     @Override

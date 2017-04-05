@@ -23,6 +23,7 @@ public class MoveAction extends GameAction
     @Override
     public void perform(float delta)
     {
+        // Pas de GC utile, Actions est un Pool
         this.actor.addAction(Actions.moveBy(
                 x * this.actor.speed * delta,
                 y * this.actor.speed * delta));

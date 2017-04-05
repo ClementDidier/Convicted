@@ -19,8 +19,10 @@ public class GameScreen extends AbstractScreen
     public GameScreen(ConvictedGame game)
     {
         super(game);
-        this.movementJoystick = new SampleJoystick((int)this.getViewport().getWorldWidth() / 5, (int)this.getViewport().getWorldHeight() * 2 / 7);
-        this.fireJoystick = new SampleJoystick((int)this.getViewport().getWorldWidth() * 4 / 5, (int)this.getViewport().getWorldHeight() * 2 / 7);
+        this.movementJoystick = new SampleJoystick((int)this.getViewport().getWorldWidth() / 8, (int)this.getViewport().getScreenHeight() * 1 / 8);
+        this.fireJoystick = new SampleJoystick((int)this.getViewport().getWorldWidth() * 7 / 8, (int)this.getViewport().getScreenHeight() * 1 / 8);
+        this.movementJoystick.setScale(0.8f);
+        this.fireJoystick.setScale(0.8f);
 
         Texture texture = new Texture(Gdx.files.internal("charset.png"));
 

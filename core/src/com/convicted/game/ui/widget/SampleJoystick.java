@@ -18,7 +18,8 @@ public class SampleJoystick extends Widget implements IJoystick, InputProcessor
     private final static int DEAD_AREA = 300;               // Zone de fin de prise en main de la gesture
     private final static int EFFECT_AREA = DEFAULT_RADIUS - DEFAULT_INNER_RADIUS;  // Zone d'effet maximale du joystick
     private final static int DEGREES = 360;
-    private final static int DIRECTIONS_COUNT = 8;          // Nombre de direction (Besoin de modifier JoystickDirection si modification)
+    private final static int ISOMETRIC_DIRECTIONS_COUNT = 8;
+    private final static int ORTHOGONAL_DIRECTIONS_COUNT = 4;
     private final static Color FOREGROUND_COLOR = Color.DARK_GRAY;
     private final static Color INNER_FOREGROUND_COLOR = Color.GRAY;
     private final static float OPACITY = 0.3f;
@@ -38,6 +39,13 @@ public class SampleJoystick extends Widget implements IJoystick, InputProcessor
         this.joystickInnerPosition = new Vector2(x, y);
         this.renderer = new ShapeRenderer();
         this.pointerID = -1;
+    }
+
+    @Override
+    public void setScale(float scale)
+    {
+        this.radius *= scale;
+        this.innerRadius *= scale;
     }
 
     @Override
@@ -107,9 +115,9 @@ public class SampleJoystick extends Widget implements IJoystick, InputProcessor
      * Obtient la direction du joystick
      * @return La direction du joystick (8 directions)
      */
-    public JoystickDirection getDirection()
+    public JoystickDirection getIsometricDirection()
     {
-        final double PORTION = DEGREES / DIRECTIONS_COUNT;
+        final double PORTION = DEGREES / ISOMETRIC_DIRECTIONS_COUNT;
         final double DEMI_PORTION = PORTION / 2.0d;
 
         double degree = getDegree();
@@ -117,12 +125,34 @@ public class SampleJoystick extends Widget implements IJoystick, InputProcessor
         degree = (degree - DEMI_PORTION < 0) ? 0 : degree - DEMI_PORTION;
         int index = (int) Math.ceil(degree / PORTION);
 
-        if(index == DIRECTIONS_COUNT) // Modulo like
+        if(index == ISOMETRIC_DIRECTIONS_COUNT) // Modulo like
         {
             return JoystickDirection.Top;
         }
 
         return JoystickDirection.getDirections()[index + 1];
+    }
+
+    /**
+     * Obtient la direction du joystick
+     * @return La direction du joystick (4 directions)
+     */
+    public JoystickDirection getOrthogonalDirection()
+    {
+        final double PORTION = DEGREES / ORTHOGONAL_DIRECTIONS_COUNT;
+        final double DEMI_PORTION = PORTION / 2.0d;
+
+        double degree = getDegree();
+
+        degree = (degree - DEMI_PORTION < 0) ? 0 : degree - DEMI_PORTION;
+        int index = (int) Math.ceil(degree / PORTION);
+
+        if(index == ISOMETRIC_DIRECTIONS_COUNT) // Modulo like
+        {
+            return JoystickDirection.Top;
+        }
+
+        return JoystickDirection.getDirections()[(2 * index + 1) % ISOMETRIC_DIRECTIONS_COUNT];
     }
 
     /**

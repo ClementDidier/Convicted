@@ -4,5 +4,6 @@ public interface IJoystick
 {
     double getDegree();
     double getPushedValue();
-    JoystickDirection getDirection();
+    JoystickDirection getIsometricDirection();
+    JoystickDirection getOrthogonalDirection();
 }
