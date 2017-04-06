@@ -6,7 +6,6 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.convicted.game.action.EntityController;
-import com.convicted.game.action.GameAction;
 
 public abstract class Character extends Image
 {
@@ -29,8 +28,6 @@ public abstract class Character extends Image
 
     public float speed;
 
-
-
     public Character(Texture texture)
     {
         super();
@@ -51,19 +48,13 @@ public abstract class Character extends Image
         this.hasMoved = false;
     }
 
-    private GameAction action;
     @Override
     public void act(float delta)
     {
         super.act(delta);
 
         if(controller != null)
-        {
             controller.act(delta);
-            action = controller.consumeAction();
-            if(action != GameAction.NONE && action.isLegal())
-                action.perform(delta);
-        }
 
         // Verifie et met à jour l'inactivité du personnage
         this.updateMovementInactivity(delta);
@@ -100,7 +91,7 @@ public abstract class Character extends Image
     public void positionChanged()
     {
         // Mise à jour de la direction du personnage
-        this.direction = Direction.getDirection(sprite.getX(), sprite.getY(), getX(), getY());
+        this.direction = Direction.getDirectionFromInterpolation(sprite.getX(), sprite.getY(), getX(), getY());
         moveDelta += Math.sqrt(Math.pow(sprite.getX() - getX(), 2) +  Math.pow(sprite.getY() - getY(), 2));
 
         // Mise à jour de l'animation de déplacement du personnage
@@ -121,6 +112,9 @@ public abstract class Character extends Image
         this.controller = controller;
     }
 
+    /**
+     * Met à jour l'affichage du personnage
+     */
     private void refreshSprite()
     {
         // Mise à jour du personnage (affichage) en fonction des données d'animation et de direction
@@ -130,22 +124,29 @@ public abstract class Character extends Image
                 (int)this.spriteRegionSize.y);
     }
 
+    /**
+     * Vérifie et met à jour les informations d'inactivité du personnage
+     * @param delta Le temps effectif en seconde depuis le dernier appel de la méthode
+     */
     private void updateMovementInactivity(float delta)
     {
+        // Si le personnage n'a toujours pas bougé depuis le dernier appel de la méthode
         if(!this.hasMoved)
         {
+            // Si le temps d'inactivité à dépasser les INACTIVITY_TIME secondes
             if(this.inactivityDeltaTime > INACTIVITY_TIME)
             {
                 this.inactivityDeltaTime = 0;
-                this.animationFrameIndex = 0;
-                this.refreshSprite();
+                this.animationFrameIndex = 0;   // On met le personnage en position standard
+                this.refreshSprite();           // On met à jour son affchage
             }
-            else inactivityDeltaTime += delta;
+            else inactivityDeltaTime += delta;  // Sinon on ajoute le temps effectif dans le temps d'inactivité
         }
         else if(this.inactivityDeltaTime != 0)
         {
             this.inactivityDeltaTime = 0;
         }
+
         this.hasMoved = false;
     }
 }

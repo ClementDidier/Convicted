@@ -22,7 +22,7 @@ public enum Direction
         return this.index;
     }
 
-    public static Direction getDirection(double oldX, double oldY, double newX, double newY)
+    public static Direction getDirectionFromInterpolation(double oldX, double oldY, double newX, double newY)
     {
         final double PORTION = 360 / 4;
 
@@ -34,11 +34,6 @@ public enum Direction
         degree = (degree < 0) ? 0 : degree;
         int index = (int) Math.ceil(degree / PORTION);
 
-        if(index == 4) // Modulo like
-        {
-            return Direction.Bottom;
-        }
-
-        return Direction.values()[index];
+        return Direction.values()[index % 4];
     }
 }

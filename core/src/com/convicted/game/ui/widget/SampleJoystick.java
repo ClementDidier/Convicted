@@ -14,20 +14,17 @@ import static com.convicted.game.utils.Converter.convertRadianToDegree;
 public class SampleJoystick extends Widget implements IJoystick, InputProcessor
 {
     private final static int DEFAULT_RADIUS = 150;          // Taille par défaut du support joystick
-    private final static int DEFAULT_INNER_RADIUS = 75;    // Taille par défaut du joystick
-    private final static int DEAD_AREA = 300;               // Zone de fin de prise en main de la gesture
-    private final static int EFFECT_AREA = DEFAULT_RADIUS - DEFAULT_INNER_RADIUS;  // Zone d'effet maximale du joystick
+    private final static int DEFAULT_INNER_RADIUS = 75;     // Taille par défaut du joystick
     private final static int DEGREES = 360;
-    private final static int ISOMETRIC_DIRECTIONS_COUNT = 8;
-    private final static int ORTHOGONAL_DIRECTIONS_COUNT = 4;
+    private final static int DEAD_AREA_FACTOR = 2;
     private final static Color FOREGROUND_COLOR = Color.DARK_GRAY;
     private final static Color INNER_FOREGROUND_COLOR = Color.GRAY;
     private final static float OPACITY = 0.3f;
 
-    private int radius, innerRadius;
+    private int radius, innerRadius, effectArea, deadArea;
     private ShapeRenderer renderer;
     private Vector2 joystickInnerPosition;
-    private int pointerID;
+    private int pointerID; // Prise en compte des gestures multiples
 
     public SampleJoystick(int x, int y)
     {
@@ -35,6 +32,8 @@ public class SampleJoystick extends Widget implements IJoystick, InputProcessor
 
         this.radius = DEFAULT_RADIUS;
         this.innerRadius = DEFAULT_INNER_RADIUS;
+        this.effectArea = this.radius - this.innerRadius;
+        this.deadArea = DEAD_AREA_FACTOR * this.radius;
 
         this.joystickInnerPosition = new Vector2(x, y);
         this.renderer = new ShapeRenderer();
@@ -46,6 +45,8 @@ public class SampleJoystick extends Widget implements IJoystick, InputProcessor
     {
         this.radius *= scale;
         this.innerRadius *= scale;
+        this.effectArea = this.radius - this.innerRadius;
+        this.deadArea = DEAD_AREA_FACTOR * this.radius;
     }
 
     @Override
@@ -89,7 +90,7 @@ public class SampleJoystick extends Widget implements IJoystick, InputProcessor
 
     /**
      * Obtient le degrée d'orientation du joystick
-     * @return Le degrée d'orientation du joystick compris entre [0; 360]
+     * @return Le degrée d'orientation du joystick compris entre [0; 360] et dont le degré 0 est disposé sur l'axe vertical en haut
      */
     @Override
     public double getDegree()
@@ -108,51 +109,7 @@ public class SampleJoystick extends Widget implements IJoystick, InputProcessor
     @Override
     public double getPushedValue()
     {
-        return this.joystickInnerPosition.dst(this.getX(), this.getY()) / EFFECT_AREA;
-    }
-
-    /**
-     * Obtient la direction du joystick
-     * @return La direction du joystick (8 directions)
-     */
-    public JoystickDirection getIsometricDirection()
-    {
-        final double PORTION = DEGREES / ISOMETRIC_DIRECTIONS_COUNT;
-        final double DEMI_PORTION = PORTION / 2.0d;
-
-        double degree = getDegree();
-
-        degree = (degree - DEMI_PORTION < 0) ? 0 : degree - DEMI_PORTION;
-        int index = (int) Math.ceil(degree / PORTION);
-
-        if(index == ISOMETRIC_DIRECTIONS_COUNT) // Modulo like
-        {
-            return JoystickDirection.Top;
-        }
-
-        return JoystickDirection.getDirections()[index + 1];
-    }
-
-    /**
-     * Obtient la direction du joystick
-     * @return La direction du joystick (4 directions)
-     */
-    public JoystickDirection getOrthogonalDirection()
-    {
-        final double PORTION = DEGREES / ORTHOGONAL_DIRECTIONS_COUNT;
-        final double DEMI_PORTION = PORTION / 2.0d;
-
-        double degree = getDegree();
-
-        degree = (degree - DEMI_PORTION < 0) ? 0 : degree - DEMI_PORTION;
-        int index = (int) Math.ceil(degree / PORTION);
-
-        if(index == ISOMETRIC_DIRECTIONS_COUNT) // Modulo like
-        {
-            return JoystickDirection.Top;
-        }
-
-        return JoystickDirection.getDirections()[(2 * index + 1) % ISOMETRIC_DIRECTIONS_COUNT];
+        return this.joystickInnerPosition.dst(this.getX(), this.getY()) / this.effectArea;
     }
 
     /**
@@ -168,9 +125,9 @@ public class SampleJoystick extends Widget implements IJoystick, InputProcessor
     public boolean touchDown(int screenX, int screenY, int pointer, int button)
     {
         Vector2 worldTouchLocation = this.localToStageCoordinates(this.screenToLocalCoordinates(new Vector2(screenX, screenY)));
-        float d = worldTouchLocation.dst(this.getX(), this.getY());
+        float distanceBetweenTouchAndJoystick = worldTouchLocation.dst(this.getX(), this.getY());
 
-        if(d < DEAD_AREA)
+        if(distanceBetweenTouchAndJoystick < this.deadArea)
         {
             this.pointerID = pointer;
             return true;
@@ -212,22 +169,22 @@ public class SampleJoystick extends Widget implements IJoystick, InputProcessor
         if(pointerID != pointer)
             return false;
 
-        boolean handle = false;
+        boolean isHandle = false;
 
         Vector2 worldTouchLocation = this.localToStageCoordinates(this.screenToLocalCoordinates(new Vector2(screenX, screenY)));
-        float d = worldTouchLocation.dst(this.getX(), this.getY());
+        float distanceBetweenTouchAndJoystick = worldTouchLocation.dst(this.getX(), this.getY());
 
-        if(d < EFFECT_AREA)
+        if(distanceBetweenTouchAndJoystick < this.effectArea)
         {
-            handle = true;
+            isHandle = true;
             this.joystickInnerPosition = worldTouchLocation;
         }
-        else if(d < DEAD_AREA)
+        else if(distanceBetweenTouchAndJoystick < this.deadArea)
         {
-            handle = true;
+            isHandle = true;
             double angle = Math.atan2(worldTouchLocation.y - this.getY(), worldTouchLocation.x - this.getX());
-            this.joystickInnerPosition.x = (float) (Math.cos(angle) * this.EFFECT_AREA) + this.getX();
-            this.joystickInnerPosition.y = (float) (Math.sin(angle) * this.EFFECT_AREA) + this.getY();
+            this.joystickInnerPosition.x = (float) (Math.cos(angle) * this.effectArea) + this.getX();
+            this.joystickInnerPosition.y = (float) (Math.sin(angle) * this.effectArea) + this.getY();
         }
         else
         {
@@ -236,7 +193,37 @@ public class SampleJoystick extends Widget implements IJoystick, InputProcessor
         }
 
 
-        return handle;
+        return isHandle;
+    }
+
+    /**
+     * Obtient la direction actuelle du joystick en teannt compte du mode donné
+     * @param type Le mode de direction (Isometric : 8 directions, Orthogonal : 8 directions)
+     * @return La direction en tenant compte du mode donné
+     */
+    public JoystickDirection getDirection(DirectionType type)
+    {
+        JoystickDirection[] directions = JoystickDirection.getDirections();
+
+        final double PORTION = DEGREES / type.getDirectionCount();
+        final double DEMI_PORTION = PORTION / 2.0d;
+
+        double degree = getDegree();
+
+        degree = (degree - DEMI_PORTION < 0) ? 0 : degree - DEMI_PORTION;
+        int index = (int) Math.ceil(degree / PORTION);
+
+        int directionIndex = type == DirectionType.Orthogonal ?
+                (2 * index + 1) % (directions.length - 1) :
+                (index + 1) % (directions.length - 1);
+
+        return directions[directionIndex];
+    }
+
+    @Override
+    public boolean moved()
+    {
+        return getPushedValue() > 0;
     }
 
     //region Keys

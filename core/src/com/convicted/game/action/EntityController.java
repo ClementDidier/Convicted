@@ -12,5 +12,4 @@ public abstract class EntityController
     }
 
     public abstract void act(float delta);
-    public abstract GameAction consumeAction();
 }

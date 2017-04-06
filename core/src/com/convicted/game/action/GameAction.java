@@ -1,5 +1,6 @@
 package com.convicted.game.action;
 
+import com.badlogic.gdx.scenes.scene2d.Action;
 import com.convicted.game.entity.Character;
 
 public abstract class GameAction
@@ -15,5 +16,5 @@ public abstract class GameAction
 
     public abstract boolean isLegal();
 
-    public abstract void perform(float delta);
+    public abstract Action generate(float delta);
 }

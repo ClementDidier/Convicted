@@ -1,5 +1,6 @@
 package com.convicted.game.action;
 
+import com.badlogic.gdx.scenes.scene2d.Action;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.convicted.game.entity.Character;
 
@@ -21,11 +22,8 @@ public class MoveAction extends GameAction
     }
 
     @Override
-    public void perform(float delta)
+    public Action generate(float delta)
     {
-        // Pas de GC utile, Actions est un Pool
-        this.actor.addAction(Actions.moveBy(
-                x * this.actor.speed * delta,
-                y * this.actor.speed * delta));
+        return Actions.moveBy(x * this.actor.speed * delta, y * this.actor.speed * delta);
     }
 }
