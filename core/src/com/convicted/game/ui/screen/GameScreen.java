@@ -12,6 +12,7 @@ import com.convicted.game.ui.widget.SampleJoystick;
 
 public class GameScreen extends AbstractScreen
 {
+    private GameContext context;
     private SampleJoystick movementJoystick;
     private SampleJoystick fireJoystick;
     private Player player;
@@ -19,6 +20,10 @@ public class GameScreen extends AbstractScreen
     public GameScreen(ConvictedGame game)
     {
         super(game);
+
+
+        this.context = new GameContext(this);
+
         this.movementJoystick = new SampleJoystick((int)this.getViewport().getWorldWidth() / 8, (int)this.getViewport().getScreenHeight() * 1 / 8);
         this.fireJoystick = new SampleJoystick((int)this.getViewport().getWorldWidth() * 7 / 8, (int)this.getViewport().getScreenHeight() * 1 / 8);
         this.movementJoystick.setScale(0.8f);
@@ -27,7 +32,7 @@ public class GameScreen extends AbstractScreen
         Texture texture = new Texture(Gdx.files.internal("charset.png"));
 
         this.player = new Player(texture);
-        PlayerController controller = new PlayerController(player, movementJoystick, fireJoystick);
+        PlayerController controller = new PlayerController(context, player, movementJoystick, fireJoystick);
         player.setController(controller);
     }
 
@@ -56,12 +61,6 @@ public class GameScreen extends AbstractScreen
     public void render(float delta)
     {
         super.render(delta);
-    }
-
-    @Override
-    public void draw()
-    {
-        //super.draw();
     }
 
     /**

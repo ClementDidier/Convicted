@@ -2,7 +2,6 @@ package com.convicted.game.ui.widget;
 
 public enum JoystickDirection
 {
-
     None(0f, 0f),
     Top(0f, 1f),
     Right_Top(0.75f, 0.75f),

@@ -2,12 +2,10 @@ package com.convicted.game.entity;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.convicted.game.action.EntityController;
 
-public abstract class Character extends Image
+public abstract class Character extends Entity
 {
     private final static Direction DEFAULT_DIRECTION = Direction.Bottom;
     private final static int DEFAULT_ANIMATION_FRAME_INDEX = 0;
@@ -17,35 +15,29 @@ public abstract class Character extends Image
     private final static double INACTIVITY_TIME = 0.3d; // Remise à 0 de l'animation après INACTIVITY_TIME secondes d'inactivité
 
     private EntityController controller = null;
-
     private Direction direction;
     private int animationFrameIndex;
-    private Sprite sprite;
-    private Vector2 spriteRegionSize;
     private double moveDelta;
     private double inactivityDeltaTime;
     private boolean hasMoved;
-
-    public float speed;
+    private int width, height;
 
     public Character(Texture texture)
     {
-        super();
+        super(texture);
+
         this.direction = DEFAULT_DIRECTION;
         this.animationFrameIndex = DEFAULT_ANIMATION_FRAME_INDEX;
-        this.spriteRegionSize = new Vector2();
-        this.spriteRegionSize.x = texture.getWidth() / SKIN_REGIONS.x;
-        this.spriteRegionSize.y = texture.getHeight() / SKIN_REGIONS.y;
-        this.sprite = new Sprite(texture,
-                this.animationFrameIndex * (int)this.spriteRegionSize.x,
-                this.direction.getIndex() * (int)this.spriteRegionSize.y,
-                (int)this.spriteRegionSize.x,
-                (int)this.spriteRegionSize.y);
         this.speed = DEFAULT_SPEED;
-        this.sprite.scale(2);
         this.moveDelta = 0;
         this.inactivityDeltaTime = 0;
         this.hasMoved = false;
+
+        this.width = (int)(this.sprite.getWidth() / SKIN_REGIONS.x);
+        this.height = (int)(this.sprite.getHeight() / SKIN_REGIONS.y);
+
+        this.updateSpriteRegion();
+        this.sprite.setScale(0.5f);
     }
 
     @Override
@@ -76,23 +68,19 @@ public abstract class Character extends Image
         return this.animationFrameIndex;
     }
 
-    public void setSkin(Texture texture)
+    public float getProjectileSpeed()
     {
-        this.spriteRegionSize.x = texture.getWidth() / SKIN_REGIONS.x;
-        this.spriteRegionSize.y = texture.getHeight() / SKIN_REGIONS.y;
-        this.sprite.setTexture(texture);
-        this.sprite.setRegion(this.animationFrameIndex * (int)this.spriteRegionSize.x,
-                this.direction.getIndex() * (int)this.spriteRegionSize.y,
-                (int)this.spriteRegionSize.x,
-                (int)this.spriteRegionSize.y);
+        return 10f;
     }
 
     @Override
     public void positionChanged()
     {
+        this.setOrigin(this.getX() + this.width, this.getY() + this.height);
+
         // Mise à jour de la direction du personnage
-        this.direction = Direction.getDirectionFromInterpolation(sprite.getX(), sprite.getY(), getX(), getY());
-        moveDelta += Math.sqrt(Math.pow(sprite.getX() - getX(), 2) +  Math.pow(sprite.getY() - getY(), 2));
+        this.direction = Direction.getDirectionFromInterpolation(this.sprite.getX(), this.sprite.getY(), getX(), getY());
+        moveDelta += Math.sqrt(Math.pow(this.sprite.getX() - getX(), 2) +  Math.pow(this.sprite.getY() - getY(), 2));
 
         // Mise à jour de l'animation de déplacement du personnage
         if(moveDelta > ANIMATION_DELTA)
@@ -101,9 +89,9 @@ public abstract class Character extends Image
             this.animationFrameIndex = (this.animationFrameIndex + 1) % (int)SKIN_REGIONS.x;
         }
 
-        sprite.setPosition(getX(), getY());
+        this.sprite.setPosition(getX(), getY());
 
-        this.refreshSprite();
+        this.updateSpriteRegion();
         this.hasMoved = true;
     }
 
@@ -115,13 +103,12 @@ public abstract class Character extends Image
     /**
      * Met à jour l'affichage du personnage
      */
-    private void refreshSprite()
+    private void updateSpriteRegion()
     {
         // Mise à jour du personnage (affichage) en fonction des données d'animation et de direction
-        this.sprite.setRegion(this.animationFrameIndex * (int)this.spriteRegionSize.x,
-                this.direction.getIndex() * (int)this.spriteRegionSize.y,
-                (int)this.spriteRegionSize.x,
-                (int)this.spriteRegionSize.y);
+        int x = this.animationFrameIndex * this.width;
+        int y = this.direction.getIndex() * this.height;
+        this.sprite.setRegion(x, y, this.width, this.height);
     }
 
     /**
@@ -136,9 +123,12 @@ public abstract class Character extends Image
             // Si le temps d'inactivité à dépasser les INACTIVITY_TIME secondes
             if(this.inactivityDeltaTime > INACTIVITY_TIME)
             {
-                this.inactivityDeltaTime = 0;
-                this.animationFrameIndex = 0;   // On met le personnage en position standard
-                this.refreshSprite();           // On met à jour son affchage
+                if(this.animationFrameIndex != 0)
+                {
+                    this.inactivityDeltaTime = 0;
+                    this.animationFrameIndex = 0;   // On met le personnage en position standard
+                    this.updateSpriteRegion();      // On met à jour son affchage
+                }
             }
             else inactivityDeltaTime += delta;  // Sinon on ajoute le temps effectif dans le temps d'inactivité
         }

@@ -206,7 +206,7 @@ public class SampleJoystick extends Widget implements IJoystick, InputProcessor
         JoystickDirection[] directions = JoystickDirection.getDirections();
 
         final double PORTION = DEGREES / type.getDirectionCount();
-        final double DEMI_PORTION = PORTION / 2.0d;
+        final double DEMI_PORTION = PORTION / 2d;
 
         double degree = getDegree();
 
@@ -214,10 +214,10 @@ public class SampleJoystick extends Widget implements IJoystick, InputProcessor
         int index = (int) Math.ceil(degree / PORTION);
 
         int directionIndex = type == DirectionType.Orthogonal ?
-                (2 * index + 1) % (directions.length - 1) :
-                (index + 1) % (directions.length - 1);
+                (2 * index) % (directions.length - 1) :
+                (index) % (directions.length - 1);
 
-        return directions[directionIndex];
+        return directions[directionIndex + 1];
     }
 
     @Override
