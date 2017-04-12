@@ -29,7 +29,7 @@ public class FireAction extends GameAction
     public Action generate(float delta)
     {
         Vector2 origin = new Vector2(actor.getOriginX(), actor.getOriginY());
-        this.context.addProjectile(context.projectileFactory.getProjectile(ProjectileType.Bubble, origin, direction, speed));
+        this.context.projectiles.add(context.projectileFactory.getProjectile(ProjectileType.Bubble, origin, direction, speed));
         return null;
     }
 }

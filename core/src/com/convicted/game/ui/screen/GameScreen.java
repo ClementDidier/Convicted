@@ -5,10 +5,14 @@ import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Batch;
 import com.convicted.game.ConvictedGame;
 import com.convicted.game.action.PlayerController;
 import com.convicted.game.entity.Player;
+import com.convicted.game.entity.projectiles.Projectile;
 import com.convicted.game.ui.widget.SampleJoystick;
+
+import java.util.Iterator;
 
 public class GameScreen extends AbstractScreen
 {
@@ -29,9 +33,7 @@ public class GameScreen extends AbstractScreen
         this.movementJoystick.setScale(0.8f);
         this.fireJoystick.setScale(0.8f);
 
-        Texture texture = new Texture(Gdx.files.internal("charset.png"));
-
-        this.player = new Player(texture);
+        this.player = new Player(new Texture(Gdx.files.internal("charset.png")));
         PlayerController controller = new PlayerController(context, player, movementJoystick, fireJoystick);
         player.setController(controller);
     }
@@ -47,20 +49,41 @@ public class GameScreen extends AbstractScreen
         inputMultiplexer.addProcessor(this.fireJoystick.getProcessor());
         Gdx.input.setInputProcessor(inputMultiplexer);
 
-        this.addActor(this.player);
         this.addActor(this.movementJoystick);
         this.addActor(this.fireJoystick);
     }
 
-    /**
-     * Called when the screen should render itself.
-     *
-     * @param delta The time in seconds since the last render.
-     */
+
     @Override
-    public void render(float delta)
+    public void update(float delta)
     {
-        super.render(delta);
+        this.player.act(delta);
+
+        Iterator<Projectile> iterator = this.context.projectiles.iterator();
+        while(iterator.hasNext())
+        {
+            Projectile projectile = iterator.next();
+            projectile.act(delta);
+
+            // Mort du projectile par sortie d'écran ou par hit
+            if(projectile.isDead())
+                iterator.remove();
+        }
+    }
+
+    @Override
+    public void draw(Batch batch)
+    {
+        batch.begin();
+        this.player.draw(batch, 1f);
+
+        Iterator<Projectile> iterator = this.context.projectiles.iterator();
+        while(iterator.hasNext())
+        {
+            Projectile projectile = iterator.next();
+            projectile.draw(batch, 1f);
+        }
+        batch.end();
     }
 
     /**

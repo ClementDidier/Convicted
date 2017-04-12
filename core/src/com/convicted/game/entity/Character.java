@@ -68,16 +68,9 @@ public abstract class Character extends Entity
         return this.animationFrameIndex;
     }
 
-    public float getProjectileSpeed()
-    {
-        return 10f;
-    }
-
     @Override
     public void positionChanged()
     {
-        this.setOrigin(this.getX() + this.width, this.getY() + this.height);
-
         // Mise à jour de la direction du personnage
         this.direction = Direction.getDirectionFromInterpolation(this.sprite.getX(), this.sprite.getY(), getX(), getY());
         moveDelta += Math.sqrt(Math.pow(this.sprite.getX() - getX(), 2) +  Math.pow(this.sprite.getY() - getY(), 2));
@@ -109,6 +102,9 @@ public abstract class Character extends Entity
         int x = this.animationFrameIndex * this.width;
         int y = this.direction.getIndex() * this.height;
         this.sprite.setRegion(x, y, this.width, this.height);
+
+        // Origin du personnage (origine de lancer des projectiles)
+        this.setOrigin(this.getX() + this.width / 2, this.getY() + this.height / 2);
     }
 
     /**

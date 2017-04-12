@@ -11,6 +11,7 @@ public abstract class Projectile extends Entity
     private GameContext context;
     private Vector2 direction;
     private float speed;
+    private Vector2 size;
 
     public Projectile(GameContext context, Texture texture, Vector2 origin, Vector2 direction, float speed)
     {
@@ -19,16 +20,14 @@ public abstract class Projectile extends Entity
         this.context = context;
         this.direction = direction;
         this.speed = speed;
+        this.size = new Vector2(texture.getWidth(), texture.getHeight());
 
-        this.setPosition(origin.x, origin.y);
+        this.setPosition(origin.x + this.size.x, origin.y + this.size.y / 2);
     }
 
     @Override
     public void act(float delta)
     {
-        if(this.getX() < 0 || this.getX() > this.context.getScreenWidth() || this.getY() < 0 || this.getY() > this.context.getScreenHeight())
-            this.remove();
-
         this.setPosition(this.getX() + direction.x * speed, this.getY() + direction.y * speed);
         this.sprite.setPosition(getX(), getY());
     }
@@ -37,5 +36,10 @@ public abstract class Projectile extends Entity
     public void draw(Batch batch, float parentAlpha)
     {
         this.sprite.draw(batch);
+    }
+
+    public boolean isDead()
+    {
+        return this.getX() < 0 || this.getX() > this.context.getScreenWidth() || this.getY() < 0 || this.getY() > this.context.getScreenHeight();
     }
 }

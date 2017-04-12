@@ -2,6 +2,7 @@ package com.convicted.game.ui.screen;
 
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Game;
+import com.badlogic.gdx.graphics.g2d.Batch;
 import com.convicted.game.ConvictedGame;
 import com.convicted.game.ui.screen.effect.TransitionEffect;
 
@@ -28,10 +29,8 @@ public class TransitionScreen extends AbstractScreen
     }
 
     @Override
-    public void render(float delta)
+    public void update(float delta)
     {
-        super.render(delta);
-
         if(this.currentEffect != null && !this.currentEffect.isFinished())
         {
             this.currentEffect.render(delta, this.currentScreen);
@@ -53,11 +52,10 @@ public class TransitionScreen extends AbstractScreen
     }
 
     @Override
-    public void draw()
+    public void draw(Batch batch)
     {
         this.currentScreen.draw();
     }
-
 
     /**
      * Called when this screen becomes the current screen for a {@link Game}.

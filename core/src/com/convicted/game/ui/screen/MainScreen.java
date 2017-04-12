@@ -4,6 +4,7 @@ import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.convicted.game.ConvictedGame;
 import com.convicted.game.ui.screen.effect.TransitionEffect;
@@ -38,25 +39,19 @@ public class MainScreen extends AbstractScreen
             })));
     }
 
-    /**
-     * Called when the screen should render itself.
-     *
-     * @param delta The time in seconds since the last render.
-     */
     @Override
-    public void render(float delta)
+    public void update(float delta)
     {
-        super.render(delta);
+
     }
 
     @Override
-    public void draw()
+    public void draw(Batch batch)
     {
-        super.draw();
-        this.getBatch().begin();
+        batch.begin();
         // TODO : Draw here
-        this.getBatch().draw(this.sprite, 100, 100);
-        this.getBatch().end();
+        batch.draw(this.sprite, 100, 100);
+        batch.end();
     }
 
     /**

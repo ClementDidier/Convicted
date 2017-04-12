@@ -2,7 +2,7 @@ package com.convicted.game.action;
 
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Action;
-import com.convicted.game.entity.Character;
+import com.convicted.game.entity.Player;
 import com.convicted.game.ui.screen.GameContext;
 import com.convicted.game.ui.widget.DirectionType;
 import com.convicted.game.ui.widget.IJoystick;
@@ -13,15 +13,15 @@ public class PlayerController extends EntityController
 {
     private IJoystick moveJoystick;
     private IJoystick fireJoystick;
-
+    private Player actor;
     private Timer fireTimer;
 
-    public PlayerController(GameContext context, Character actor, IJoystick moveJoystick, IJoystick fireJoystick)
+    public PlayerController(GameContext context, Player actor, IJoystick moveJoystick, IJoystick fireJoystick)
     {
-        super(context, actor);
+        super(context);
         this.moveJoystick = moveJoystick;
         this.fireJoystick = fireJoystick;
-
+        this.actor = actor;
         this.fireTimer = new Timer();
     }
 
@@ -37,7 +37,7 @@ public class PlayerController extends EntityController
                     this.moveJoystick.getDirection(DirectionType.Orthogonal).getY() * (float) this.moveJoystick.getPushedValue() * 10f));
         }
 
-        if(this.fireJoystick.moved() && this.fireTimer.wait(0.5f))
+        if(this.fireJoystick.moved() && this.fireTimer.wait(actor.getProjectileCooldown()))
         {
             JoystickDirection direction = this.fireJoystick.getDirection(DirectionType.Orthogonal);
             this.actions.add(new FireAction(this.context, this.actor, new Vector2(direction.getX(), direction.getY()), actor.getProjectileSpeed()));

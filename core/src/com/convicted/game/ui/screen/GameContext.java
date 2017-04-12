@@ -11,8 +11,9 @@ import java.util.List;
 public class GameContext
 {
     private Stage stage;
-    private List<Projectile> projectiles;
-    private List<Entity> entities;
+
+    public List<Projectile> projectiles;
+    public List<Entity> entities;
 
     public ProjectileFactory projectileFactory;
 
@@ -23,11 +24,6 @@ public class GameContext
         this.entities = new ArrayList<Entity>();
 
         this.projectileFactory = new ProjectileFactory(this);
-    }
-
-    public void addProjectile(Projectile projectile)
-    {
-        this.stage.addActor(projectile);
     }
 
     public float getScreenWidth()
