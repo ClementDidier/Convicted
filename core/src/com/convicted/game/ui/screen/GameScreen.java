@@ -51,6 +51,7 @@ public class GameScreen extends AbstractScreen
 
         this.addActor(this.movementJoystick);
         this.addActor(this.fireJoystick);
+        this.addActor(this.player);
     }
 
 

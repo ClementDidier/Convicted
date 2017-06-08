@@ -30,6 +30,9 @@ public abstract class Projectile extends Entity
     {
         this.setPosition(this.getX() + direction.x * speed, this.getY() + direction.y * speed);
         this.sprite.setPosition(getX(), getY());
+
+        if(this.isDead())
+            this.remove();
     }
 
     @Override
