@@ -14,6 +14,5 @@ public abstract class Widget extends Actor
         this.setY(y);
     }
 
-
     public abstract InputProcessor getProcessor();
 }

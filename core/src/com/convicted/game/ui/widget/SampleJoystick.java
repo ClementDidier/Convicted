@@ -50,7 +50,7 @@ public class SampleJoystick extends Widget implements IJoystick, InputProcessor
     }
 
     @Override
-    public void draw(Batch batch,  float parentAlpha)
+    public void draw(Batch batch, float parentAlpha)
     {
         batch.end();
         Gdx.gl.glEnable(GL20.GL_BLEND);
@@ -58,7 +58,7 @@ public class SampleJoystick extends Widget implements IJoystick, InputProcessor
 
         this.renderer.setProjectionMatrix(batch.getProjectionMatrix());
         this.renderer.begin(ShapeRenderer.ShapeType.Filled);
-        this.renderer.setColor(FOREGROUND_COLOR.r, FOREGROUND_COLOR.g, FOREGROUND_COLOR.b, batch.getColor().a/1f * OPACITY);
+        this.renderer.setColor(FOREGROUND_COLOR.r, FOREGROUND_COLOR.g, FOREGROUND_COLOR.b, parentAlpha * OPACITY);
         this.renderer.circle(this.getX(), this.getY(), this.radius);
         this.renderer.setColor(INNER_FOREGROUND_COLOR.r, INNER_FOREGROUND_COLOR.g, INNER_FOREGROUND_COLOR.b, batch.getColor().a/1f * OPACITY);
         this.renderer.circle(this.joystickInnerPosition.x, this.joystickInnerPosition.y, this.innerRadius);
@@ -100,6 +100,18 @@ public class SampleJoystick extends Widget implements IJoystick, InputProcessor
         if(angleRadian < 0)
             return 360 + convertRadianToDegree(angleRadian);
         return convertRadianToDegree(angleRadian);
+    }
+
+    /**
+     * Obtient le vecteur directionnel actuel du joystick
+     * @return Le vecteur directionnel actuel (x, y) où x et y compris entre [0; 1]
+     */
+    @Override
+    public Vector2 getDirectionalVector()
+    {
+        double rad = this.getAngle(this.joystickInnerPosition);
+        Vector2 dir = new Vector2((float)Math.sin(rad), (float)Math.cos(rad));
+        return dir;
     }
 
     /**

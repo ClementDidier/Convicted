@@ -34,8 +34,10 @@ public abstract class AbstractScreen extends Stage implements com.badlogic.gdx.S
         this.update(delta);
         super.act(delta);
 
-        this.draw(this.getBatch());
         super.draw();
+
+        // TODO : Remove ?
+        this.draw(this.getBatch());
     }
 
     public abstract void update(float delta);

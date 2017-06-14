@@ -32,9 +32,10 @@ public class PlayerController extends EntityController
 
         if(this.moveJoystick.moved())
         {
+            Vector2 directionalVector = this.moveJoystick.getDirectionalVector();
             this.actions.add(new MoveAction(this.context, this.actor,
-                    this.moveJoystick.getDirection(DirectionType.Orthogonal).getX() * (float) this.moveJoystick.getPushedValue() * 10f,
-                    this.moveJoystick.getDirection(DirectionType.Orthogonal).getY() * (float) this.moveJoystick.getPushedValue() * 10f));
+                    directionalVector.x * (float) this.moveJoystick.getPushedValue() * 10f,
+                    directionalVector.y * (float) this.moveJoystick.getPushedValue() * 10f));
         }
 
         if(this.fireJoystick.moved() && this.fireTimer.wait(actor.getProjectileCooldown()))
