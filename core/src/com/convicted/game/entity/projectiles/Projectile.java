@@ -18,15 +18,10 @@ public abstract class Projectile extends Entity {
     private boolean removed;
     private float scale;
 
-<<<<<<< HEAD
-    public Projectile(GameContext context, Texture texture, Vector2 origin, Vector2 direction, float speed)
+
+    public Projectile(GameContext context, Texture texture, Vector2 origin, Vector2 direction, float speed, float decreaseSpeedValue)
     {
         super(texture, context);
-
-=======
-    public Projectile(GameContext context, Texture texture, Vector2 origin, Vector2 direction, float speed, float decreaseSpeedValue) {
-        super(texture);
->>>>>>> cfe87855515ec96a03bcd9e6496b0f22f78a769b
         this.context = context;
         this.direction = direction;
         this.speed = speed;
