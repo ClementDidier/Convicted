@@ -2,6 +2,7 @@ package com.convicted.game.ui.screen;
 
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.convicted.game.entity.Entity;
+import com.convicted.game.entity.Player;
 import com.convicted.game.entity.projectiles.Projectile;
 import com.convicted.game.utils.ProjectileFactory;
 
@@ -14,6 +15,7 @@ public class GameContext
 
     public List<Projectile> projectiles;
     public List<Entity> entities;
+    public Player player;
 
     public ProjectileFactory projectileFactory;
 

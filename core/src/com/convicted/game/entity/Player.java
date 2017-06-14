@@ -1,6 +1,7 @@
 package com.convicted.game.entity;
 
 import com.badlogic.gdx.graphics.Texture;
+import com.convicted.game.ui.screen.GameContext;
 
 public class Player extends Character
 {
@@ -10,8 +11,8 @@ public class Player extends Character
     private float projectileSpeed;
     private float projectileCooldown;
 
-    public Player(Texture texture) {
-        super(texture);
+    public Player(Texture texture, GameContext context) {
+        super(texture, context);
         this.projectileSpeed = DEFAULT_PROJECTILE_SPEED;
         this.projectileCooldown = DEFAULT_PROJECTILE_COOLDOWN;
     }

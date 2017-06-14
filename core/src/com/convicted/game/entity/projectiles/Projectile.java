@@ -15,7 +15,7 @@ public abstract class Projectile extends Entity
 
     public Projectile(GameContext context, Texture texture, Vector2 origin, Vector2 direction, float speed)
     {
-        super(texture);
+        super(texture, context);
 
         this.context = context;
         this.direction = direction;

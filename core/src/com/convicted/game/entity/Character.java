@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Scaling;
 import com.convicted.game.action.EntityController;
+import com.convicted.game.ui.screen.GameContext;
 
 public abstract class Character extends Entity
 {
@@ -25,10 +26,9 @@ public abstract class Character extends Entity
     private boolean hasMoved;
     private int width, height;
 
-    public Character(Texture texture)
+    public Character(Texture texture, GameContext context)
     {
-        super(texture);
-
+        super(texture, context);
         this.direction = DEFAULT_DIRECTION;
         this.animationFrameIndex = DEFAULT_ANIMATION_FRAME_INDEX;
         this.speed = DEFAULT_SPEED;
@@ -42,7 +42,6 @@ public abstract class Character extends Entity
         this.sprite.setScale(SCALE.x, SCALE.y);
 
         this.updateSpriteRegion();
-
     }
 
     @Override
@@ -51,7 +50,7 @@ public abstract class Character extends Entity
         super.act(delta);
 
         if(controller != null)
-            controller.act(delta);
+            controller.update(delta);
 
         // Verifie et met à jour l'inactivité du personnage
         this.updateMovementInactivity(delta);

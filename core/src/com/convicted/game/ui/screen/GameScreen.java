@@ -8,7 +8,9 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.convicted.game.ConvictedGame;
 import com.convicted.game.action.PlayerController;
+import com.convicted.game.entity.Entity;
 import com.convicted.game.entity.Player;
+import com.convicted.game.entity.monsters.Grub;
 import com.convicted.game.entity.projectiles.Projectile;
 import com.convicted.game.ui.widget.SampleJoystick;
 
@@ -19,7 +21,6 @@ public class GameScreen extends AbstractScreen
     private GameContext context;
     private SampleJoystick movementJoystick;
     private SampleJoystick fireJoystick;
-    private Player player;
 
     public GameScreen(ConvictedGame game)
     {
@@ -33,9 +34,13 @@ public class GameScreen extends AbstractScreen
         this.movementJoystick.setScale(0.8f);
         this.fireJoystick.setScale(0.8f);
 
-        this.player = new Player(new Texture(Gdx.files.internal("charset.png")));
-        PlayerController controller = new PlayerController(context, player, movementJoystick, fireJoystick);
+        Player player = new Player(new Texture(Gdx.files.internal("charset.png")), this.context);
+        PlayerController controller = new PlayerController(player, movementJoystick, fireJoystick);
         player.setController(controller);
+        this.context.player = player;
+
+        this.context.entities.add(player);
+        this.context.entities.add(new Grub(this.context));
     }
 
     /**
@@ -51,14 +56,18 @@ public class GameScreen extends AbstractScreen
 
         this.addActor(this.movementJoystick);
         this.addActor(this.fireJoystick);
-        this.addActor(this.player);
+
+        for(Entity entity : this.context.entities)
+        {
+            this.addActor(entity);
+        }
     }
 
 
     @Override
     public void update(float delta)
     {
-        this.player.act(delta);
+        //this.player.act(delta);
 
         Iterator<Projectile> iterator = this.context.projectiles.iterator();
         while(iterator.hasNext())
@@ -76,7 +85,6 @@ public class GameScreen extends AbstractScreen
     public void draw(Batch batch)
     {
         batch.begin();
-        this.player.draw(batch, 1f);
 
         Iterator<Projectile> iterator = this.context.projectiles.iterator();
         while(iterator.hasNext())
