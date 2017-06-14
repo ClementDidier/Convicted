@@ -65,9 +65,12 @@ public class GameScreen extends AbstractScreen
             Projectile projectile = iterator.next();
             projectile.act(delta);
 
-            // Mort du projectile par sortie d'écran ou par hit
+            // Mort du projectile par sortie d'écran, fin de déplacement ou par hit
             if(projectile.isDead())
+            {
+                // TODO: Animation de fin de vie du projectile ?
                 iterator.remove();
+            }
         }
     }
 

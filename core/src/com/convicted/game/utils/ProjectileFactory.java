@@ -20,7 +20,7 @@ public class ProjectileFactory
         switch (type)
         {
             case Bubble:
-                return new Bubble(this.context, type.getTexture(), origin, direction, speed);
+                return new Bubble(this.context, type.getTexture(), origin, direction, speed, type.getDecreaseSpeedValue());
         }
         return null;
     }

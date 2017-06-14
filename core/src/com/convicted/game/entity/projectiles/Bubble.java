@@ -6,8 +6,8 @@ import com.convicted.game.ui.screen.GameContext;
 
 public class Bubble extends Projectile
 {
-    public Bubble(GameContext context, Texture texture, Vector2 origin, Vector2 direction, float speed)
+    public Bubble(GameContext context, Texture texture, Vector2 origin, Vector2 direction, float speed, float decreaseSpeedValue)
     {
-        super(context, texture, origin, direction, speed);
+        super(context, texture, origin, direction, speed, decreaseSpeedValue);
     }
 }
