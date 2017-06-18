@@ -8,7 +8,7 @@ public class Convicted
      * Initialise une instance du jeu si necessaire et la retourne
      * @return L'instance du jeu
      */
-    public static ConvictedGame getGame()
+    public static ConvictedGame game()
     {
         if(game == null)
             game = new ConvictedGame();
