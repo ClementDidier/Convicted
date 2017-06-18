@@ -1,5 +1,8 @@
 package com.convicted.game.drawable.entity;
 
-public abstract class Entity
+import com.convicted.game.drawable.Drawable;
+
+public abstract class Entity implements Drawable
 {
+
 }

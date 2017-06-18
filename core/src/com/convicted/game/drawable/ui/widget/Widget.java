@@ -1,4 +1,4 @@
-package com.convicted.game.drawable.ui.screen.widget;
+package com.convicted.game.drawable.ui.widget;
 
 import com.convicted.game.drawable.Drawable;
 

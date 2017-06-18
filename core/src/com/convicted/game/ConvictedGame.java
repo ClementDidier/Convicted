@@ -1,19 +1,17 @@
 package com.convicted.game;
 
 import com.badlogic.gdx.Game;
-import com.badlogic.gdx.Screen;
-import com.convicted.game.ui.screen.AbstractScreen;
-import com.convicted.game.ui.screen.Navigator;
-import com.convicted.game.ui.screen.Scene;
+import com.convicted.game.drawable.ui.screen.ConvictedScreen;
+import com.convicted.game.drawable.ui.screen.ScreenNavigator;
 
 public class ConvictedGame extends Game
 {
-	private AbstractScreen screen;
+	private ConvictedScreen screen;
 
 	@Override
 	public void create ()
 	{
-		Navigator.navigateTo(this, Scene.MainScreen);
+		ScreenNavigator.navigateTo(ConvictedScreen.MENU);
 	}
 
 	@Override
@@ -26,23 +24,26 @@ public class ConvictedGame extends Game
 	@Override
 	public void dispose ()
 	{
+		if(this.screen != null)
+			this.screen.dispose();
 	}
 
-	public void setScreen(AbstractScreen screen)
+	public void setScreen(ConvictedScreen screen)
 	{
 		super.setScreen(screen);
 		this.screen = screen;
 	}
 
-	public AbstractScreen getScreen()
+	@Override
+	public ConvictedScreen getScreen()
 	{
 		return this.screen;
 	}
 
 	@Override
 	@Deprecated
-	public void setScreen(Screen screen)
+	public final void setScreen(com.badlogic.gdx.Screen screen)
 	{
-		throw new UnsupportedOperationException("Méthode \"setScreen(Screen)\" non supportée dans la classe AbstractScreen");
+		throw new UnsupportedOperationException("Méthode \"setScreen(Screen)\" non supportée avec gdx.Screen en paramètre");
 	}
 }

@@ -1,7 +1,20 @@
 package com.convicted.game.drawable.ui.screen;
 
-public class GameScreen extends Screen
+import com.badlogic.gdx.graphics.g2d.Batch;
+
+public class GameScreen extends ConvictedScreen
 {
+    public GameScreen()
+    {
+        super();
+    }
+
+    @Override
+    public void show()
+    {
+
+    }
+
     @Override
     public void update(float delta)
     {
@@ -9,7 +22,7 @@ public class GameScreen extends Screen
     }
 
     @Override
-    public void draw()
+    public void draw(Batch batch)
     {
 
     }
