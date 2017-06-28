@@ -25,7 +25,10 @@ public class FadeInTransition extends Transition
     {
         this.elapsed += delta;
         this.alpha = 1 - (this.elapsed / this.duration);
-        screen.setAlpha(this.alpha);
+
+        if(this.alpha >= 0f)
+            screen.getBatch().setAlpha(this.alpha);
+
         return this.elapsed < this.duration;
     }
 }

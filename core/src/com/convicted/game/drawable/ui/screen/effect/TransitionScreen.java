@@ -1,6 +1,6 @@
 package com.convicted.game.drawable.ui.screen.effect;
 
-import com.badlogic.gdx.graphics.g2d.Batch;
+import com.convicted.game.drawable.ui.screen.ConvictedBatch;
 import com.convicted.game.drawable.ui.screen.ConvictedScreen;
 import com.convicted.game.drawable.ui.screen.ScreenNavigator;
 
@@ -14,24 +14,23 @@ public class TransitionScreen extends ConvictedScreen
 
     public TransitionScreen(ConvictedScreen current, ConvictedScreen next, Transition firstScreenTransition, Transition secondScreenTransition)
     {
+        super();
         this.finalAnimationStep = false;
         this.current = current;
         this.next = next;
         this.transition = firstScreenTransition;
         this.secondTransition = secondScreenTransition;
-    }
 
-    @Override
-    public void show()
-    {
-        transition.initialize();
+        firstScreenTransition.initialize();
+        secondScreenTransition.initialize();
     }
 
     @Override
     public void update(float delta)
     {
+        // TODO : Create a sequence of transition effects
         // Mets à jour l'écran actuel
-        if (!transition.act(delta, this.current))
+        if (transition.act(delta, this.current))
             return;
 
         if(!finalAnimationStep)
@@ -49,8 +48,14 @@ public class TransitionScreen extends ConvictedScreen
     }
 
     @Override
-    public void draw(Batch batch)
+    public void draw(ConvictedBatch batch)
     {
         this.current.draw(batch);
+    }
+
+    @Override
+    public void show()
+    {
+
     }
 }

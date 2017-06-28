@@ -1,8 +1,8 @@
 package com.convicted.game.drawable.entity.character;
 
-import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.convicted.game.drawable.entity.Entity;
+import com.convicted.game.drawable.ui.screen.ConvictedBatch;
 
 public abstract class Character extends Entity
 {
@@ -33,8 +33,8 @@ public abstract class Character extends Entity
     }
 
     @Override
-    public void draw(Batch batch)
+    public void draw(ConvictedBatch batch)
     {
-        this.sprite.draw(batch);
+        batch.draw(this.sprite);
     }
 }

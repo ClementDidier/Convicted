@@ -2,27 +2,36 @@ package com.convicted.game.drawable.ui.screen;
 
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Game;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.g2d.Batch;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.utils.viewport.FitViewport;
+import com.badlogic.gdx.utils.viewport.Viewport;
 import com.convicted.game.drawable.Drawable;
 
 public abstract class ConvictedScreen implements com.badlogic.gdx.Screen, Drawable
 {
+    private final static Color CLEAR_COLOR = new Color(Color.WHITE);
+    private final static Vector2 VIEWPORT = new Vector2(1280, 720);
+
     public final static MainScreen MENU = new MainScreen();
     public final static GameScreen GAME = new GameScreen();
-    protected Batch batch;
+
+    protected ConvictedBatch batch;
+    protected OrthographicCamera camera;
+    protected Viewport viewport;
 
     protected ConvictedScreen()
     {
-        this.batch = new SpriteBatch();
+        this.batch = new ConvictedBatch();
+        this.camera = new OrthographicCamera();
+        this.viewport = new FitViewport(VIEWPORT.x, VIEWPORT.y, camera);
+        this.viewport.update(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), true);
+        this.viewport.apply();
     }
 
-    public final void setAlpha(float alpha)
-    {
-        Color color = this.batch.getColor();
-        this.batch.setColor(color.r, color.g, color.b, alpha);
-    }
 
     /**
      * Called when the screen should render itself.
@@ -34,9 +43,15 @@ public abstract class ConvictedScreen implements com.badlogic.gdx.Screen, Drawab
     {
         this.update(delta);
 
-        this.batch.begin();
-        this.draw(this.batch);
-        this.batch.end();
+        this.camera.update();
+
+        Gdx.gl.glClearColor( 0f, 0f, 0f, 1f);
+        Gdx.gl.glClear( GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT );
+
+        batch.setProjectionMatrix(this.camera.combined);
+        batch.begin();
+        this.draw(batch);
+        batch.end();
     }
 
     /**
@@ -85,5 +100,10 @@ public abstract class ConvictedScreen implements com.badlogic.gdx.Screen, Drawab
     {
         if(this.batch != null)
             this.batch.dispose();
+    }
+
+    public ConvictedBatch getBatch()
+    {
+        return this.batch;
     }
 }

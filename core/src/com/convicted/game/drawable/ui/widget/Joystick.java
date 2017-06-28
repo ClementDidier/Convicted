@@ -1,6 +1,6 @@
 package com.convicted.game.drawable.ui.widget;
 
-import com.badlogic.gdx.graphics.g2d.Batch;
+import com.convicted.game.drawable.ui.screen.ConvictedBatch;
 
 public class Joystick extends Widget
 {
@@ -11,7 +11,7 @@ public class Joystick extends Widget
     }
 
     @Override
-    public void draw(Batch batch)
+    public void draw(ConvictedBatch batch)
     {
 
     }
