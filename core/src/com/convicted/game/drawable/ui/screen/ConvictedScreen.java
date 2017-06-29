@@ -3,9 +3,11 @@ package com.convicted.game.drawable.ui.screen;
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.viewport.FitViewport;
@@ -24,6 +26,7 @@ public abstract class ConvictedScreen implements com.badlogic.gdx.Screen, Drawab
     protected ConvictedBatch batch;
     protected OrthographicCamera camera;
     protected Viewport viewport;
+    protected AssetManager assetManager;
 
     private boolean initialized;
 
@@ -34,6 +37,8 @@ public abstract class ConvictedScreen implements com.badlogic.gdx.Screen, Drawab
         this.viewport = new FitViewport(VIEWPORT.x, VIEWPORT.y, camera);
         this.viewport.update(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), true);
         this.viewport.apply();
+        this.assetManager = new AssetManager();
+        Texture.setAssetManager(this.assetManager);
 
         this.initialized = false;
     }
@@ -123,8 +128,8 @@ public abstract class ConvictedScreen implements com.badlogic.gdx.Screen, Drawab
     @Override
     public void dispose()
     {
-        if(this.batch != null)
-            this.batch.dispose();
+        this.batch.dispose();
+        this.batch = null;
     }
 
     public ConvictedBatch getBatch()

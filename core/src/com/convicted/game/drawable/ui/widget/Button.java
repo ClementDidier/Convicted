@@ -20,10 +20,4 @@ public class Button extends Widget
     {
 
     }
-
-    @Override
-    public void dispose()
-    {
-
-    }
 }

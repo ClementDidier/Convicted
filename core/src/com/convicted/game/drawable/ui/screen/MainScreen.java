@@ -4,8 +4,8 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 
-import static com.convicted.game.drawable.ui.screen.transition.TransitionEffect.FadeIn;
-import static com.convicted.game.drawable.ui.screen.transition.TransitionEffect.FadeOut;
+import static com.convicted.game.drawable.ui.screen.transition.Transitions.FadeIn;
+import static com.convicted.game.drawable.ui.screen.transition.Transitions.FadeOut;
 
 public class MainScreen extends ConvictedScreen
 {
@@ -32,7 +32,7 @@ public class MainScreen extends ConvictedScreen
     @Override
     public void update(float delta)
     {
-        ScreenNavigator.navigateTo(ConvictedScreen.GAME, FadeIn(1f), FadeOut(5f));
+        ScreenNavigator.navigateTo(ConvictedScreen.GAME, FadeIn(1000), FadeOut(3000));
     }
 
     @Override

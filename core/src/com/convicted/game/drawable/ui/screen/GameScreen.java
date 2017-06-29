@@ -21,6 +21,7 @@ public class GameScreen extends ConvictedScreen
     {
         Gdx.app.log("GameScreen", "load");
         this.sprite = new Sprite(new Texture(Gdx.files.internal("rogue.png")));
+        this.sprite.setScale(1.5f);
         this.joystick = new Joystick((int)this.camera.viewportHeight * 1 / 5, (int)this.camera.viewportHeight * 1 / 5);
 
         InputMultiplexer inputMultiplexer = new InputMultiplexer();

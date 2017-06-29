@@ -1,6 +1,5 @@
 package com.convicted.game.drawable.ui.widget;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.convicted.game.drawable.ui.screen.ConvictedBatch;
@@ -12,18 +11,18 @@ public class ProgressBar extends Widget
     private int maximum;
     private Sprite bar;
 
-    public ProgressBar(int x, int y)
+    public ProgressBar(Texture texture, int x, int y)
     {
         super(x, y);
         this.percent = 0f;
         this.maximum = 100;
-        this.bar = new Sprite(new Texture(Gdx.files.internal("progressbar.png")));
+        this.bar = new Sprite(texture);
         this.bar.setPosition(x, y);
     }
 
-    public ProgressBar()
+    public ProgressBar(Texture texture)
     {
-        this(0,0);
+        this(texture,0,0);
     }
 
     @Override
@@ -106,12 +105,5 @@ public class ProgressBar extends Widget
     private void updatePercent()
     {
         this.percent = this.getValue() * 1f / this.getMaximum();
-    }
-
-    @Override
-    public void dispose()
-    {
-        if(this.bar != null)
-            this.bar.getTexture().dispose();
     }
 }

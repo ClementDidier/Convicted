@@ -10,7 +10,7 @@ public class FadeOutTransition implements Transition
 
     public FadeOutTransition(float miliseconds)
     {
-        this.duration = miliseconds;
+        this.duration = miliseconds / 1000;
     }
 
     @Override

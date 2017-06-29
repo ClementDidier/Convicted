@@ -1,6 +1,6 @@
 package com.convicted.game.drawable.ui.screen.transition;
 
-public final class TransitionEffect
+public final class Transitions
 {
     public static Transition FadeIn(float miliseconds)
     {

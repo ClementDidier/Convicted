@@ -28,4 +28,9 @@ public class ConvictedBatch extends SpriteBatch
     {
         alpha = a;
     }
+
+    public float getAlpha()
+    {
+        return alpha;
+    }
 }

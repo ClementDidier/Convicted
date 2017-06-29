@@ -1,10 +1,9 @@
 package com.convicted.game.drawable.ui.widget;
 
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.utils.Disposable;
 import com.convicted.game.drawable.Drawable;
 
-public abstract class Widget implements Drawable, Disposable
+public abstract class Widget implements Drawable
 {
     protected Vector2 position;
 

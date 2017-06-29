@@ -6,10 +6,11 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.utils.Disposable;
 import com.convicted.game.Convicted;
 import com.convicted.game.drawable.ui.screen.ConvictedBatch;
 
-public class Joystick extends Widget implements InputProcessor
+public class Joystick extends Widget implements InputProcessor, Disposable
 {
     private final static int DEFAULT_RADIUS = 120;          // Taille par défaut du support joystick
     private final static int DEFAULT_INNER_RADIUS = 60;     // Taille par défaut du joystick
@@ -67,9 +68,9 @@ public class Joystick extends Widget implements InputProcessor
 
         this.renderer.setProjectionMatrix(batch.getProjectionMatrix());
         this.renderer.begin(ShapeRenderer.ShapeType.Filled);
-        this.renderer.setColor(FOREGROUND_COLOR.r, FOREGROUND_COLOR.g, FOREGROUND_COLOR.b, this.opacity);
+        this.renderer.setColor(FOREGROUND_COLOR.r, FOREGROUND_COLOR.g, FOREGROUND_COLOR.b, batch.getAlpha()/1f * this.opacity);
         this.renderer.circle(this.getPosition().x, this.getPosition().y, this.radius);
-        this.renderer.setColor(INNER_FOREGROUND_COLOR.r, INNER_FOREGROUND_COLOR.g, INNER_FOREGROUND_COLOR.b, batch.getColor().a/1f * this.opacity);
+        this.renderer.setColor(INNER_FOREGROUND_COLOR.r, INNER_FOREGROUND_COLOR.g, INNER_FOREGROUND_COLOR.b, batch.getAlpha()/1f * this.opacity);
         this.renderer.circle(this.joystickInnerPosition.x, this.joystickInnerPosition.y, this.innerRadius);
         this.renderer.end();
 
