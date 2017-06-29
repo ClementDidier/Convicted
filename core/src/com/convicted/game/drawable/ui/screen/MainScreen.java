@@ -32,7 +32,7 @@ public class MainScreen extends ConvictedScreen
     @Override
     public void update(float delta)
     {
-        ScreenNavigator.navigateTo(ConvictedScreen.GAME, FadeIn(5f), FadeOut(5f));
+        ScreenNavigator.navigateTo(ConvictedScreen.GAME, FadeIn(1f), FadeOut(5f));
     }
 
     @Override
@@ -45,5 +45,6 @@ public class MainScreen extends ConvictedScreen
     public void dispose()
     {
         this.sprite.getTexture().dispose();
+        super.dispose();
     }
 }

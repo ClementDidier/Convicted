@@ -2,6 +2,7 @@ package com.convicted.game.drawable.ui.screen;
 
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.convicted.game.drawable.Drawable;
 
 public class ConvictedBatch extends SpriteBatch
 {
@@ -16,6 +17,11 @@ public class ConvictedBatch extends SpriteBatch
     public void draw(Sprite sprite)
     {
         sprite.draw(this, alpha);
+    }
+
+    public void draw(Drawable drawable)
+    {
+        drawable.draw(this);
     }
 
     public void setAlpha(float a)

@@ -11,7 +11,7 @@ public class ConvictedGame extends Game
 	@Override
 	public void create ()
 	{
-		ScreenNavigator.navigateTo(ConvictedScreen.MENU);
+		ScreenNavigator.navigateTo(ConvictedScreen.SPLASH);
 	}
 
 	@Override

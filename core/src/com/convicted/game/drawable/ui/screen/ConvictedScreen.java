@@ -7,15 +7,17 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.convicted.game.drawable.Drawable;
 
 public abstract class ConvictedScreen implements com.badlogic.gdx.Screen, Drawable
 {
-    private final static Color CLEAR_COLOR = new Color(Color.WHITE);
-    private final static Vector2 VIEWPORT = new Vector2(1280, 720);
+    private final static Color CLEAR_COLOR = new Color(Color.BLACK);
 
+    public final static Vector2 VIEWPORT = new Vector2(1280, 720);
+    public final static SplashScreen SPLASH = new SplashScreen();
     public final static MainScreen MENU = new MainScreen();
     public final static GameScreen GAME = new GameScreen();
 
@@ -61,7 +63,7 @@ public abstract class ConvictedScreen implements com.badlogic.gdx.Screen, Drawab
 
             this.camera.update();
 
-            Gdx.gl.glClearColor(0f, 0f, 0f, 1f);
+            Gdx.gl.glClearColor(CLEAR_COLOR.r, CLEAR_COLOR.g, CLEAR_COLOR.b, CLEAR_COLOR.a);
             Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
 
             batch.setProjectionMatrix(this.camera.combined);
@@ -69,6 +71,12 @@ public abstract class ConvictedScreen implements com.badlogic.gdx.Screen, Drawab
             this.draw(batch);
             batch.end();
         }
+    }
+
+    public Vector2 screenToLocalCoordinates(int x, int y)
+    {
+        Vector3 vector = this.camera.unproject(new Vector3(x, y, 0));
+        return new Vector2(vector.x, vector.y);
     }
 
     /**
