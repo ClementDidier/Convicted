@@ -11,13 +11,19 @@ public class GameScreen extends ConvictedScreen
     public GameScreen()
     {
         super();
+    }
+
+    @Override
+    public void load()
+    {
+        Gdx.app.log("GameScreen", "load");
         this.sprite = new Sprite(new Texture(Gdx.files.internal("rogue.png")));
     }
 
     @Override
     public void show()
     {
-
+        Gdx.app.log("GameScreen", "shown");
     }
 
     @Override

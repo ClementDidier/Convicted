@@ -1,8 +1,8 @@
-package com.convicted.game.drawable.ui.screen.effect;
+package com.convicted.game.drawable.ui.screen.transition;
 
 import com.convicted.game.drawable.ui.screen.ConvictedScreen;
 
-public class FadeOutTransition extends Transition
+public class FadeOutTransition implements Transition
 {
     private float alpha;
     private float duration;
@@ -14,14 +14,14 @@ public class FadeOutTransition extends Transition
     }
 
     @Override
-    protected void initialize()
+    public void initialize()
     {
         this.alpha = 0f;
         this.elapsed = 0f;
     }
 
     @Override
-    protected boolean act(float delta, ConvictedScreen screen)
+    public boolean act(float delta, ConvictedScreen screen)
     {
         this.elapsed += delta;
         this.alpha = this.elapsed / this.duration;

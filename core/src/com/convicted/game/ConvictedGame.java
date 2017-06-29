@@ -30,6 +30,7 @@ public class ConvictedGame extends Game
 
 	public void setScreen(ConvictedScreen screen)
 	{
+		screen.initialize();
 		super.setScreen(screen);
 		this.screen = screen;
 	}

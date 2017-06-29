@@ -23,6 +23,8 @@ public abstract class ConvictedScreen implements com.badlogic.gdx.Screen, Drawab
     protected OrthographicCamera camera;
     protected Viewport viewport;
 
+    private boolean initialized;
+
     protected ConvictedScreen()
     {
         this.batch = new ConvictedBatch();
@@ -30,8 +32,20 @@ public abstract class ConvictedScreen implements com.badlogic.gdx.Screen, Drawab
         this.viewport = new FitViewport(VIEWPORT.x, VIEWPORT.y, camera);
         this.viewport.update(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), true);
         this.viewport.apply();
+
+        this.initialized = false;
     }
 
+    public final void initialize()
+    {
+        if(!this.initialized)
+        {
+            this.load();
+            this.initialized = true;
+        }
+    }
+
+    public abstract void load();
 
     /**
      * Called when the screen should render itself.
@@ -41,17 +55,20 @@ public abstract class ConvictedScreen implements com.badlogic.gdx.Screen, Drawab
     @Override
     public final void render(float delta)
     {
-        this.update(delta);
+        if(this.initialized)
+        {
+            this.update(delta);
 
-        this.camera.update();
+            this.camera.update();
 
-        Gdx.gl.glClearColor( 0f, 0f, 0f, 1f);
-        Gdx.gl.glClear( GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT );
+            Gdx.gl.glClearColor(0f, 0f, 0f, 1f);
+            Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
 
-        batch.setProjectionMatrix(this.camera.combined);
-        batch.begin();
-        this.draw(batch);
-        batch.end();
+            batch.setProjectionMatrix(this.camera.combined);
+            batch.begin();
+            this.draw(batch);
+            batch.end();
+        }
     }
 
     /**
