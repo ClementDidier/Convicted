@@ -3,6 +3,8 @@ package com.convicted.game.drawable.ui.screen;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.convicted.game.ConvictedGame;
+import com.convicted.game.data.Asset;
 
 import static com.convicted.game.drawable.ui.screen.transition.Transitions.FadeIn;
 import static com.convicted.game.drawable.ui.screen.transition.Transitions.FadeOut;
@@ -11,16 +13,16 @@ public class MainScreen extends ConvictedScreen
 {
     private Sprite sprite;
 
-    public MainScreen()
+    public MainScreen(ConvictedGame game)
     {
-        super();
+        super(game);
     }
 
     @Override
     public void load()
     {
         Gdx.app.log("MainScreen", "load");
-        this.sprite = new Sprite(new Texture(Gdx.files.internal("unknow.png")));
+        this.sprite = new Sprite(this.game.getAssetManager().<Texture>get(Asset.UNKNOW));
     }
 
     @Override
@@ -44,7 +46,7 @@ public class MainScreen extends ConvictedScreen
     @Override
     public void dispose()
     {
-        this.sprite.getTexture().dispose();
+        this.game.getAssetManager().dispose();
         super.dispose();
     }
 }

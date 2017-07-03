@@ -3,15 +3,14 @@ package com.convicted.game.drawable.ui.screen;
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
+import com.convicted.game.ConvictedGame;
 import com.convicted.game.drawable.Drawable;
 
 public abstract class ConvictedScreen implements com.badlogic.gdx.Screen, Drawable
@@ -19,26 +18,25 @@ public abstract class ConvictedScreen implements com.badlogic.gdx.Screen, Drawab
     private final static Color CLEAR_COLOR = new Color(Color.BLACK);
 
     public final static Vector2 VIEWPORT = new Vector2(1280, 720);
-    public final static SplashScreen SPLASH = new SplashScreen();
-    public final static MainScreen MENU = new MainScreen();
-    public final static GameScreen GAME = new GameScreen();
+    public final static SplashScreen SPLASH = new SplashScreen(ConvictedGame.getInstance());
+    public final static MainScreen MENU = new MainScreen(ConvictedGame.getInstance());
+    public final static GameScreen GAME = new GameScreen(ConvictedGame.getInstance());
 
     protected ConvictedBatch batch;
     protected OrthographicCamera camera;
     protected Viewport viewport;
-    protected AssetManager assetManager;
+    protected ConvictedGame game;
 
     private boolean initialized;
 
-    protected ConvictedScreen()
+    protected ConvictedScreen(ConvictedGame game)
     {
         this.batch = new ConvictedBatch();
         this.camera = new OrthographicCamera();
         this.viewport = new FitViewport(VIEWPORT.x, VIEWPORT.y, camera);
         this.viewport.update(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), true);
         this.viewport.apply();
-        this.assetManager = new AssetManager();
-        Texture.setAssetManager(this.assetManager);
+        this.game = game;
 
         this.initialized = false;
     }

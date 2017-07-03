@@ -8,4 +8,9 @@ public class Player extends Character
     {
         super(texture);
     }
+
+    @Override
+    public void reset() {
+
+    }
 }

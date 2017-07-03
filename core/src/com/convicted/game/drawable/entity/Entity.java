@@ -1,9 +1,10 @@
 package com.convicted.game.drawable.entity;
 
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.utils.Pool;
 import com.convicted.game.drawable.Drawable;
 
-public abstract class Entity implements Drawable
+public abstract class Entity implements Drawable, Pool.Poolable
 {
     private Vector2 position;
 

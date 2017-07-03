@@ -10,6 +10,6 @@ public class AndroidLauncher extends AndroidApplication {
 		super.onCreate(savedInstanceState);
 		AndroidApplicationConfiguration config = new AndroidApplicationConfiguration();
 		config.useImmersiveMode = true;
-		initialize(Convicted.getInstance(), config);
+		initialize(ConvictedGame.getInstance(), config);
 	}
 }

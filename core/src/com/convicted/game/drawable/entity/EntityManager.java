@@ -1,18 +1,26 @@
 package com.convicted.game.drawable.entity;
 
-public class EntityManager
-{
-    // AssetManager
-    // POOL
+import com.convicted.game.drawable.ui.screen.ConvictedBatch;
 
-    // load(String id, Type type) ==> <Entity> ("grub", Monster.class)
-    // contains(String id)
-    // unload(String id)
-    // unloadAll()
-    // getAll()
-    // getAll(Type type)
-    // get(String id, Type type)
-    // updateAll(float delta)
-    // drawAll(ConvictedBatch batch)
-    // dispose()
+import java.util.List;
+
+public interface EntityManager<T extends Entity>
+{
+    void load(String entity, Class<T> type);
+
+    boolean contains(String id);
+
+    void unload(String id);
+
+    void unloadAll();
+
+    List<T> getAll();
+
+    T get(String id, Class<T> type);
+
+    void updateAll(float delta);
+
+    void drawAll(ConvictedBatch batch);
+
+    void dispose();
 }

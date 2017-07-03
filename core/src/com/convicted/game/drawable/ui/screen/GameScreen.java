@@ -4,6 +4,9 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.convicted.game.ConvictedGame;
+import com.convicted.game.data.Asset;
+import com.convicted.game.data.Configuration;
 import com.convicted.game.drawable.ui.widget.Joystick;
 
 public class GameScreen extends ConvictedScreen
@@ -11,18 +14,21 @@ public class GameScreen extends ConvictedScreen
     private Sprite sprite;
     private Joystick joystick;
 
-    public GameScreen()
+    public GameScreen(ConvictedGame game)
     {
-        super();
+        super(game);
     }
 
     @Override
     public void load()
     {
         Gdx.app.log("GameScreen", "load");
-        this.sprite = new Sprite(new Texture(Gdx.files.internal("rogue.png")));
+        this.sprite = new Sprite(this.game.getAssetManager().<Texture>get(Asset.ROGUE));
         this.sprite.setScale(1.5f);
-        this.joystick = new Joystick((int)this.camera.viewportHeight * 1 / 5, (int)this.camera.viewportHeight * 1 / 5);
+
+        this.joystick = new Joystick(
+                this.game.getConfiguration().getInteger(Configuration.PREFS_MOVE_JOYSTICK_ALIGN_X),
+                this.game.getConfiguration().getInteger(Configuration.PREFS_MOVE_JOYSTICK_ALIGN_Y));
 
         InputMultiplexer inputMultiplexer = new InputMultiplexer();
         inputMultiplexer.addProcessor(this.joystick.getProcessor());
@@ -51,7 +57,7 @@ public class GameScreen extends ConvictedScreen
     @Override
     public void dispose()
     {
-        this.sprite.getTexture().dispose();
+        this.game.getAssetManager().dispose();
         this.joystick.dispose();
         super.dispose();
     }

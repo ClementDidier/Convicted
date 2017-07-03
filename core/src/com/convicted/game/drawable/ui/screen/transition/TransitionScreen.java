@@ -1,5 +1,6 @@
 package com.convicted.game.drawable.ui.screen.transition;
 
+import com.convicted.game.ConvictedGame;
 import com.convicted.game.drawable.ui.screen.ConvictedBatch;
 import com.convicted.game.drawable.ui.screen.ConvictedScreen;
 import com.convicted.game.drawable.ui.screen.ScreenNavigator;
@@ -9,10 +10,10 @@ public class TransitionScreen extends ConvictedScreen
     private ConvictedScreen current;
     private Transition transition;
 
-    public TransitionScreen(final ConvictedScreen currentScreen, Transition transition1, final ConvictedScreen nextScreen, Transition transition2)
+    public TransitionScreen(ConvictedGame game, Transition transition1, final ConvictedScreen nextScreen, Transition transition2)
     {
-        super();
-        this.current = currentScreen;
+        super(game);
+        this.current = game.getScreen();
 
         this.transition = new SequenceTransition(
                 transition1,
@@ -26,7 +27,7 @@ public class TransitionScreen extends ConvictedScreen
                     }
 
                     @Override
-                    public boolean act(float delta, ConvictedScreen screen)
+                    public boolean act(float delta)
                     {
                         return false;
                     }
@@ -42,7 +43,7 @@ public class TransitionScreen extends ConvictedScreen
                     }
 
                     @Override
-                    public boolean act(float delta, ConvictedScreen screen)
+                    public boolean act(float delta)
                     {
                         return false;
                     }
@@ -66,7 +67,7 @@ public class TransitionScreen extends ConvictedScreen
     @Override
     public void update(float delta)
     {
-        this.transition.act(delta, this.current);
+        this.transition.act(delta);
     }
 
     @Override

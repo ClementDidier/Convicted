@@ -3,11 +3,12 @@ package com.convicted.game.drawable.ui.screen;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.convicted.game.ConvictedGame;
+import com.convicted.game.data.Asset;
+import com.convicted.game.data.Configuration;
 import com.convicted.game.drawable.entity.character.Monster;
 import com.convicted.game.drawable.ui.widget.ProgressBar;
 import com.convicted.game.utils.Timer;
-
-import java.util.Random;
 
 import static com.convicted.game.drawable.ui.screen.transition.Transitions.FadeIn;
 import static com.convicted.game.drawable.ui.screen.transition.Transitions.FadeOut;
@@ -17,35 +18,39 @@ public class SplashScreen extends ConvictedScreen
     private Sprite background;
     private ProgressBar bar;
     private Timer timer;
-
     private Monster grub;
-    private Random random;
 
-    public SplashScreen()
+    public SplashScreen(ConvictedGame game)
     {
-        super();
+        super(game);
     }
 
     @Override
     public void load()
     {
-        this.assetManager.load("splash.png", Texture.class);
-        this.assetManager.load("grub.png", Texture.class);
-        this.assetManager.load("progressbar.png", Texture.class);
-        this.assetManager.finishLoading();
+        // Dependances essentielles
+        this.game.getAssetManager().load(Asset.SPLASH_BACKGROUND);
+        this.game.getAssetManager().load(Asset.SPLASH_PROGRESS_BAR);
+        this.game.getAssetManager().load(Asset.GRUB);
+        this.game.getAssetManager().finishLoading();
 
-        this.background = new Sprite(this.assetManager.get("splash.png", Texture.class));
+        // Dependances à charger pour la suite
+        this.game.getAssetManager().load(Asset.UNKNOW);
+        this.game.getAssetManager().load(Asset.ROGUE);
+        // ****
+
+
+        this.background = new Sprite(this.game.getAssetManager().<Texture>get(Asset.SPLASH_BACKGROUND));
 
         this.timer = new Timer();
-        this.bar = new ProgressBar(this.assetManager.get("progressbar.png", Texture.class));
-        this.bar.setMaximum(100);
-        this.bar.setPosition(ConvictedScreen.VIEWPORT.x / 2 - this.bar.getWidth() / 2, 260);
+        this.bar = new ProgressBar(this.game.getAssetManager().<Texture>get(Asset.SPLASH_PROGRESS_BAR));
+        this.bar.setPosition(
+                this.game.getConfiguration().getFloat(Configuration.PREFS_SPLASH_PROGRESS_BAR_ALIGN_X),
+                this.game.getConfiguration().getFloat(Configuration.PREFS_SPLASH_PROGRESS_BAR_ALIGN_Y));
 
-        this.grub = new Monster(this.assetManager.get("grub.png", Texture.class));
+        this.grub = new Monster(this.game.getAssetManager().<Texture>get(Asset.GRUB));
         this.grub.setPosition(this.bar.getPosition().x, this.bar.getPosition().y);
         this.grub.setScale(6);
-
-        this.random = new Random();
     }
 
     @Override
@@ -60,6 +65,7 @@ public class SplashScreen extends ConvictedScreen
         this.timer.update(delta);
         this.bar.update(delta);
         this.grub.update(delta);
+        this.game.getAssetManager().update((int)(delta * 1000));
 
         if(this.bar.isComplete() && this.timer.ring(100))
         {
@@ -70,7 +76,7 @@ public class SplashScreen extends ConvictedScreen
 
         if(this.timer.ring(100))
         {
-            this.bar.add(this.random.nextInt(10));
+            this.bar.setValue((int)(this.game.getAssetManager().getProgress() * 100));
             this.grub.setPosition(
                     this.bar.getWidth() * this.bar.getPercent() + this.bar.getPosition().x + this.grub.getRegionWidth() * 3,
                     this.bar.getPosition().y + this.grub.getRegionHeight());
@@ -89,7 +95,7 @@ public class SplashScreen extends ConvictedScreen
     @Override
     public void dispose()
     {
-        this.assetManager.dispose();
+        this.game.getAssetManager().dispose();
         super.dispose();
     }
 }

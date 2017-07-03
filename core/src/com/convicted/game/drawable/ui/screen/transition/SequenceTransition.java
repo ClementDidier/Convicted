@@ -1,7 +1,5 @@
 package com.convicted.game.drawable.ui.screen.transition;
 
-import com.convicted.game.drawable.ui.screen.ConvictedScreen;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,12 +25,12 @@ public final class SequenceTransition implements Transition
     }
 
     @Override
-    public boolean act(float delta, ConvictedScreen screen)
+    public boolean act(float delta)
     {
         if(this.currentTransitionIndex >= this.transitionList.size())
             return false;
 
-        if(!this.transitionList.get(this.currentTransitionIndex).act(delta, screen))
+        if(!this.transitionList.get(this.currentTransitionIndex).act(delta))
         {
             this.currentTransitionIndex++;
             this.transitionList.get(this.currentTransitionIndex).initialize();

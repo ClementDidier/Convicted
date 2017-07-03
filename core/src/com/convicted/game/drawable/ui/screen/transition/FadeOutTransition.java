@@ -1,6 +1,6 @@
 package com.convicted.game.drawable.ui.screen.transition;
 
-import com.convicted.game.drawable.ui.screen.ConvictedScreen;
+import com.convicted.game.ConvictedGame;
 
 public class FadeOutTransition implements Transition
 {
@@ -21,13 +21,13 @@ public class FadeOutTransition implements Transition
     }
 
     @Override
-    public boolean act(float delta, ConvictedScreen screen)
+    public boolean act(float delta)
     {
         this.elapsed += delta;
         this.alpha = this.elapsed / this.duration;
 
         if(this.alpha <= 1f)
-            screen.getBatch().setAlpha(this.alpha);
+            ConvictedGame.getInstance().getScreen().getBatch().setAlpha(this.alpha);
 
         return this.elapsed < this.duration;
     }

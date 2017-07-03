@@ -7,7 +7,7 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Disposable;
-import com.convicted.game.Convicted;
+import com.convicted.game.ConvictedGame;
 import com.convicted.game.drawable.ui.screen.ConvictedBatch;
 
 public class Joystick extends Widget implements InputProcessor, Disposable
@@ -138,7 +138,7 @@ public class Joystick extends Widget implements InputProcessor, Disposable
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button)
     {
-        Vector2 worldTouchLocation = Convicted.getInstance().getScreen().screenToLocalCoordinates(screenX, screenY);
+        Vector2 worldTouchLocation = ConvictedGame.getInstance().getScreen().screenToLocalCoordinates(screenX, screenY);
         float distanceBetweenTouchAndJoystick = worldTouchLocation.dst(this.getPosition().x, this.getPosition().y);
 
         if(distanceBetweenTouchAndJoystick < this.deadArea)
@@ -170,7 +170,7 @@ public class Joystick extends Widget implements InputProcessor, Disposable
 
         boolean isHandle = false;
 
-        Vector2 worldTouchLocation = Convicted.getInstance().getScreen().screenToLocalCoordinates(screenX, screenY);
+        Vector2 worldTouchLocation = ConvictedGame.getInstance().getScreen().screenToLocalCoordinates(screenX, screenY);
 
         float distanceBetweenTouchAndJoystick = worldTouchLocation.dst(this.getPosition().x, this.getPosition().y);
 

@@ -1,5 +1,11 @@
 package com.convicted.game.drawable.entity.projectile;
 
-public abstract class Projectile
+import com.badlogic.gdx.utils.Pool;
+
+public class Projectile implements Pool.Poolable
 {
+    @Override
+    public void reset() {
+
+    }
 }

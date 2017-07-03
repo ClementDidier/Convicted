@@ -29,7 +29,7 @@ public class ProgressBar extends Widget
     public void update(float delta)
     {
         this.bar.setRegion(0, 0, this.getPercent(), 1);
-        this.bar.setSize(this.getPercent() * this.getWidth(), this.getheight());
+        this.bar.setSize(this.getPercent() * this.getWidth(), this.getHeight());
         this.bar.setPosition(this.getPosition().x, this.getPosition().y);
         this.bar.setOrigin(this.getPosition().x, this.getPosition().y);
     }
@@ -45,7 +45,7 @@ public class ProgressBar extends Widget
         return this.bar.getTexture().getWidth();
     }
 
-    public float getheight()
+    public float getHeight()
     {
         return this.bar.getTexture().getHeight();
     }
