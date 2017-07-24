@@ -8,7 +8,8 @@ public enum Asset
     SPLASH_PROGRESS_BAR("progressbar.png", Texture.class),
     UNKNOW("unknow.png", Texture.class),
     ROGUE("rogue.png", Texture.class),
-    GRUB("grub.png", Texture.class);
+    GRUB("grub.png", Texture.class),
+    START_BUTTON("buttonStart.png", Texture.class);
 
     private String assetFileName;
     private Class assetType;

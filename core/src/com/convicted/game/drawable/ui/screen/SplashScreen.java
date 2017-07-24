@@ -45,8 +45,8 @@ public class SplashScreen extends ConvictedScreen
         this.timer = new Timer();
         this.bar = new ProgressBar(this.game.getAssetManager().<Texture>get(Asset.SPLASH_PROGRESS_BAR));
         this.bar.setPosition(
-                this.game.getConfiguration().getFloat(Configuration.PREFS_SPLASH_PROGRESS_BAR_ALIGN_X),
-                this.game.getConfiguration().getFloat(Configuration.PREFS_SPLASH_PROGRESS_BAR_ALIGN_Y));
+                this.game.getConfiguration().getInteger(Configuration.PREFS_SPLASH_PROGRESS_BAR_ALIGN_X),
+                this.game.getConfiguration().getInteger(Configuration.PREFS_SPLASH_PROGRESS_BAR_ALIGN_Y));
 
         this.grub = new Monster(this.game.getAssetManager().<Texture>get(Asset.GRUB));
         this.grub.setPosition(this.bar.getPosition().x, this.bar.getPosition().y);
@@ -71,7 +71,7 @@ public class SplashScreen extends ConvictedScreen
         {
             Gdx.app.log("Splash", "ring");
             this.grub.hide();
-            ScreenNavigator.navigateTo(ConvictedScreen.MENU, FadeIn(5000), FadeOut(2000));
+            ScreenNavigator.navigateTo(ConvictedScreen.MENU, FadeIn(1000), FadeOut(1000));
         }
 
         if(this.timer.ring(100))

@@ -16,6 +16,8 @@ public class Configuration
     public final static String PREFS_MOVE_JOYSTICK_ALIGN_Y = "MoveJoystickAlignY";
     public final static String PREFS_SPLASH_PROGRESS_BAR_ALIGN_X = "SplashProgressBarAlignX";
     public final static String PREFS_SPLASH_PROGRESS_BAR_ALIGN_Y = "SplashProgressBarAlignY";
+    public final static String PREFS_MAIN_BUTTON_START_ALIGN_X = "MainButtonStartAlignX";
+    public final static String PREFS_MAIN_BUTTON_START_ALIGN_Y = "MainButtonStartAlignY";
 
     private static Configuration CONFIG;
 
@@ -56,17 +58,23 @@ public class Configuration
 
     public void initialize()
     {
-        if(!this.prefs.contains(PREFS_MOVE_JOYSTICK_ALIGN_X))
-            this.prefs.putFloat(PREFS_MOVE_JOYSTICK_ALIGN_X, ConvictedScreen.VIEWPORT.x / 7);
+        //if(!this.prefs.contains(PREFS_MOVE_JOYSTICK_ALIGN_X))
+            this.prefs.putInteger(PREFS_MOVE_JOYSTICK_ALIGN_X, (int)(ConvictedScreen.VIEWPORT.x / 7f));
 
-        if(!this.prefs.contains(PREFS_MOVE_JOYSTICK_ALIGN_Y))
-            this.prefs.putFloat(PREFS_MOVE_JOYSTICK_ALIGN_Y, ConvictedScreen.VIEWPORT.y / 5);
+        //if(!this.prefs.contains(PREFS_MOVE_JOYSTICK_ALIGN_Y))
+            this.prefs.putInteger(PREFS_MOVE_JOYSTICK_ALIGN_Y, (int)(ConvictedScreen.VIEWPORT.y / 5f));
 
-        if(!this.prefs.contains(PREFS_SPLASH_PROGRESS_BAR_ALIGN_X))
-            this.prefs.putInteger(PREFS_SPLASH_PROGRESS_BAR_ALIGN_X, (int)(ConvictedScreen.VIEWPORT.x / 2 - 655 / 2));
+        //if(!this.prefs.contains(PREFS_SPLASH_PROGRESS_BAR_ALIGN_X))
+            this.prefs.putInteger(PREFS_SPLASH_PROGRESS_BAR_ALIGN_X, (int)(ConvictedScreen.VIEWPORT.x / 2f - 655f / 2f));
 
-        if(!this.prefs.contains(PREFS_SPLASH_PROGRESS_BAR_ALIGN_Y))
+        //if(!this.prefs.contains(PREFS_SPLASH_PROGRESS_BAR_ALIGN_Y))
             this.prefs.putInteger(PREFS_SPLASH_PROGRESS_BAR_ALIGN_Y, 260);
+
+        //if(!this.prefs.contains(PREFS_MAIN_BUTTON_START_ALIGN_X))
+            this.prefs.putInteger(PREFS_MAIN_BUTTON_START_ALIGN_X, (int)(ConvictedScreen.VIEWPORT.x / 2.));
+
+        //if(!this.prefs.contains(PREFS_MAIN_BUTTON_START_ALIGN_Y))
+            this.prefs.putInteger(PREFS_MAIN_BUTTON_START_ALIGN_Y, (int)(ConvictedScreen.VIEWPORT.y / 2.));
 
         this.prefs.flush();
     }
