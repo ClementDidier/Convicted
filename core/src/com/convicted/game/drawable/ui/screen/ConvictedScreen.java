@@ -1,7 +1,5 @@
 package com.convicted.game.drawable.ui.screen;
 
-import com.badlogic.gdx.ApplicationListener;
-import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
@@ -12,6 +10,11 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.convicted.game.ConvictedGame;
 import com.convicted.game.drawable.Drawable;
+import com.convicted.game.drawable.ui.screen.effect.ScreenEffect;
+
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 
 public abstract class ConvictedScreen implements com.badlogic.gdx.Screen, Drawable
 {
@@ -28,6 +31,8 @@ public abstract class ConvictedScreen implements com.badlogic.gdx.Screen, Drawab
     protected ConvictedGame game;
 
     private boolean initialized;
+    private List<ScreenEffect> effects;
+    private Vector2 cameraOrigin;
 
     protected ConvictedScreen(ConvictedGame game)
     {
@@ -39,31 +44,46 @@ public abstract class ConvictedScreen implements com.badlogic.gdx.Screen, Drawab
         this.game = game;
 
         this.initialized = false;
+        this.effects = new ArrayList<ScreenEffect>();
     }
 
+    /**
+     * Initialise l'écran une et une seule fois, et appel la fonction enfant de chargement
+     */
     public final void initialize()
     {
         if(!this.initialized)
         {
             this.load();
+            this.cameraOrigin = new Vector2(this.camera.position.x, this.camera.position.y);
             this.initialized = true;
         }
     }
 
+    /**
+     * Fonction enfant de chargement, appelée une et une seule fois à l'ouverture de l'écran, avant son affichage
+     */
     public abstract void load();
 
     /**
-     * Called when the screen should render itself.
-     *
-     * @param delta The time in seconds since the last render.
+     * Ajoute et lance un nouvel effet d'écran
+     * @param effect L'effet à lancer sur l'écran actuel
      */
+    public void startEffect(ScreenEffect effect)
+    {
+        this.effects.add(effect);
+    }
+
     @Override
     public final void render(float delta)
     {
         if(this.initialized)
         {
-            this.update(delta);
+            this.camera.position.x = this.cameraOrigin.x;
+            this.camera.position.y = this.cameraOrigin.y;
 
+            this.update(delta);
+            this.updateEffects(delta);
             this.camera.update();
 
             Gdx.gl.glClearColor(CLEAR_COLOR.r, CLEAR_COLOR.g, CLEAR_COLOR.b, CLEAR_COLOR.a);
@@ -76,53 +96,60 @@ public abstract class ConvictedScreen implements com.badlogic.gdx.Screen, Drawab
         }
     }
 
+    /**
+     * Mets à jour les effets d'écran
+     * @param delta Le temps passé en milisecondes depuis la dernière mise à jour
+     */
+    private void updateEffects(float delta)
+    {
+        Iterator<ScreenEffect> iterator = this.effects.iterator();
+        while(iterator.hasNext())
+        {
+            ScreenEffect effect = iterator.next();
+
+            if(effect.isFinished())
+                iterator.remove();
+            else
+                effect.update(delta, camera);
+        }
+    }
+
+    /**
+     * Converti les coordonnées d'écran vers des coordonnées relatives au monde du jeu
+     * @param x L'alignement horizontal (X) de la gesture detectée sur l'écran
+     * @param y L'alignement vertical (Y) de la gesture detectée sur l'écran
+     * @return Les coordonnées converties
+     */
     public Vector2 screenToLocalCoordinates(int x, int y)
     {
         Vector3 vector = this.camera.unproject(new Vector3(x, y, 0));
         return new Vector2(vector.x, vector.y);
     }
 
-    /**
-     * @param width
-     * @param height
-     * @see ApplicationListener#resize(int, int)
-     */
     @Override
     public void resize(int width, int height)
     {
 
     }
 
-    /**
-     * @see ApplicationListener#pause()
-     */
     @Override
     public void pause()
     {
 
     }
 
-    /**
-     * @see ApplicationListener#resume()
-     */
     @Override
     public void resume()
     {
 
     }
 
-    /**
-     * Called when this screen is no longer the current screen for a {@link Game}.
-     */
     @Override
     public void hide()
     {
 
     }
 
-    /**
-     * Called when this screen should release all resources.
-     */
     @Override
     public void dispose()
     {

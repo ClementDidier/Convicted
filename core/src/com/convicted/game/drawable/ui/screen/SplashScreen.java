@@ -34,10 +34,6 @@ public class SplashScreen extends ConvictedScreen
         this.game.getAssetManager().load(Asset.GRUB);
         this.game.getAssetManager().finishLoading();
 
-        // Dependances à charger pour la suite
-        this.game.getAssetManager().load(Asset.ROGUE);
-        // ****
-
 
         this.background = new Sprite(this.game.getAssetManager().<Texture>get(Asset.SPLASH_BACKGROUND));
 
@@ -67,7 +63,6 @@ public class SplashScreen extends ConvictedScreen
 
         if(this.bar.isComplete() && this.timer.ring(100))
         {
-            Gdx.app.log("Splash", "ring");
             this.grub.hide();
             ScreenNavigator.navigateTo(ConvictedScreen.MENU, FadeIn(2000), FadeOut(1000));
         }
