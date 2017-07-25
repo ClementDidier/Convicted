@@ -3,7 +3,6 @@ package com.convicted.game.drawable.entity.character;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.convicted.game.controller.CharacterController;
-import com.convicted.game.controller.MonsterController;
 import com.convicted.game.drawable.entity.Entity;
 import com.convicted.game.drawable.ui.screen.ConvictedBatch;
 

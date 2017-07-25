@@ -2,9 +2,9 @@ package com.convicted.game;
 
 import com.badlogic.gdx.Game;
 import com.convicted.game.data.Configuration;
+import com.convicted.game.data.ConvictedAssetManager;
 import com.convicted.game.drawable.ui.screen.ConvictedScreen;
 import com.convicted.game.drawable.ui.screen.ScreenNavigator;
-import com.convicted.game.data.ConvictedAssetManager;
 
 public class ConvictedGame extends Game
 {

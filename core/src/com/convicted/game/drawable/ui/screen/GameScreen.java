@@ -3,9 +3,7 @@ package com.convicted.game.drawable.ui.screen;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
-
 import com.convicted.game.ConvictedGame;
 import com.convicted.game.controller.MonsterController;
 import com.convicted.game.data.Asset;

@@ -1,7 +1,6 @@
 package com.convicted.game.data;
 
 import com.badlogic.gdx.assets.AssetManager;
-import com.convicted.game.data.Asset;
 
 public class ConvictedAssetManager extends AssetManager
 {

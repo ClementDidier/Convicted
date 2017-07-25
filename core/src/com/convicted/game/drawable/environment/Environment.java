@@ -1,6 +1,5 @@
 package com.convicted.game.drawable.environment;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
 import com.convicted.game.ConvictedGame;

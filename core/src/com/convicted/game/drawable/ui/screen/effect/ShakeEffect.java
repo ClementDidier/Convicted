@@ -1,6 +1,5 @@
 package com.convicted.game.drawable.ui.screen.effect;
 
-import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 
 import java.util.Random;
