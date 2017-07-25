@@ -6,10 +6,12 @@ public enum Asset
 {
     SPLASH_BACKGROUND("splash.png", Texture.class),
     SPLASH_PROGRESS_BAR("progressbar.png", Texture.class),
-    UNKNOW("unknow.png", Texture.class),
     ROGUE("rogue.png", Texture.class),
     GRUB("grub.png", Texture.class),
-    START_BUTTON("buttonStart.png", Texture.class);
+    START_BUTTON("buttonStart.png", Texture.class),
+    BASIC_TILE("tileGround.png", Texture.class),
+    WALL_TILE("tileWall.png", Texture.class),
+    MAINSCREEN_BACKGROUND("mainscreen-background.png", Texture.class);
 
     private String assetFileName;
     private Class assetType;

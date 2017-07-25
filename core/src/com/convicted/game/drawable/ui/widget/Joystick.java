@@ -9,11 +9,12 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Disposable;
 import com.convicted.game.ConvictedGame;
 import com.convicted.game.drawable.ui.screen.ConvictedBatch;
+import com.convicted.game.drawable.ui.screen.ConvictedScreen;
 
 public class Joystick extends Widget implements InputProcessor, Disposable
 {
-    private final static int DEFAULT_RADIUS = 120;          // Taille par défaut du support joystick
-    private final static int DEFAULT_INNER_RADIUS = 60;     // Taille par défaut du joystick
+    private final static int DEFAULT_RADIUS = (int)(0.1f * ConvictedScreen.VIEWPORT.x); // Taille par défaut du support joystick
+    private final static int DEFAULT_INNER_RADIUS = DEFAULT_RADIUS / 2;                 // Taille par défaut du joystick
     private final static int DEAD_AREA_FACTOR = 2;
     private final static Color FOREGROUND_COLOR = Color.DARK_GRAY;
     private final static Color INNER_FOREGROUND_COLOR = Color.GRAY;

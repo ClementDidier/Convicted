@@ -18,6 +18,7 @@ import static com.convicted.game.drawable.ui.screen.transition.Transitions.FadeO
 public class MainScreen extends ConvictedScreen
 {
     private Button buttonStart;
+    private Sprite background;
     private Sprite sprite;
 
     public MainScreen(ConvictedGame game)
@@ -28,23 +29,25 @@ public class MainScreen extends ConvictedScreen
     @Override
     public void load()
     {
+        this.game.getAssetManager().load(Asset.MAINSCREEN_BACKGROUND);
         this.game.getAssetManager().load(Asset.START_BUTTON);
         this.game.getAssetManager().finishLoading();
 
-        Gdx.app.log("MainScreen", "load");
-        this.sprite = new Sprite(this.game.getAssetManager().<Texture>get(Asset.UNKNOW));
+        this.background = new Sprite(this.game.getAssetManager().<Texture>get(Asset.MAINSCREEN_BACKGROUND));
+
         this.buttonStart = new Button(
                 this.game.getConfiguration().getInteger(Configuration.PREFS_MAIN_BUTTON_START_ALIGN_X),
                 this.game.getConfiguration().getInteger(Configuration.PREFS_MAIN_BUTTON_START_ALIGN_Y),
                 this.game.getAssetManager().<Texture>get(Asset.START_BUTTON));
-        this.buttonStart.setScale(5f);
+        //this.buttonStart.setScale(5f);
+        this.buttonStart.update(0);
 
         this.buttonStart.addListener(new ButtonClickListener()
         {
             @Override
             public void onClick(InputEvent event, int x, int y)
             {
-                ScreenNavigator.navigateTo(ConvictedScreen.GAME, FadeIn(1000), FadeOut(3000));
+                ScreenNavigator.navigateTo(ConvictedScreen.GAME, FadeIn(1000), FadeOut(1000));
             }
         });
 
@@ -68,7 +71,7 @@ public class MainScreen extends ConvictedScreen
     @Override
     public void draw(ConvictedBatch batch)
     {
-        batch.draw(this.sprite);
+        batch.draw(this.background);
         batch.draw(this.buttonStart);
     }
 

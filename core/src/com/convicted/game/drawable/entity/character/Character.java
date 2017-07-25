@@ -2,6 +2,8 @@ package com.convicted.game.drawable.entity.character;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.convicted.game.controller.CharacterController;
+import com.convicted.game.controller.MonsterController;
 import com.convicted.game.drawable.entity.Entity;
 import com.convicted.game.drawable.ui.screen.ConvictedBatch;
 
@@ -16,6 +18,7 @@ public abstract class Character extends Entity
     private boolean isLookingLeftSide;
     private byte frameAnimationIndex;
 
+    private CharacterController controller;
 
     public Character(Texture texture)
     {
@@ -29,10 +32,13 @@ public abstract class Character extends Entity
     @Override
     public void update(float delta)
     {
+        if(this.controller != null)
+            this.controller.act(delta);
+
         if(!this.sprite.isFlipX())
             this.sprite.setFlip(this.isLookingLeftSide, false);
 
-        this.sprite.setRegion((int)this.regionWidth * this.frameAnimationIndex, 0, (int)this.regionWidth, (int)this.sprite.getHeight());
+        this.sprite.setRegion((int)(this.regionWidth * this.frameAnimationIndex), 0, (int)this.regionWidth, (int)this.sprite.getHeight());
         this.sprite.setSize(this.regionWidth, this.sprite.getHeight());
     }
 
@@ -72,5 +78,10 @@ public abstract class Character extends Entity
     public void show()
     {
         this.sprite.setAlpha(1f);
+    }
+
+    public void setController(CharacterController controller)
+    {
+        this.controller = controller;
     }
 }

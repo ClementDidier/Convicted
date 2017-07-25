@@ -35,7 +35,6 @@ public class SplashScreen extends ConvictedScreen
         this.game.getAssetManager().finishLoading();
 
         // Dependances à charger pour la suite
-        this.game.getAssetManager().load(Asset.UNKNOW);
         this.game.getAssetManager().load(Asset.ROGUE);
         // ****
 
@@ -50,7 +49,6 @@ public class SplashScreen extends ConvictedScreen
 
         this.grub = new Monster(this.game.getAssetManager().<Texture>get(Asset.GRUB));
         this.grub.setPosition(this.bar.getPosition().x, this.bar.getPosition().y);
-        this.grub.setScale(6);
     }
 
     @Override
@@ -71,7 +69,7 @@ public class SplashScreen extends ConvictedScreen
         {
             Gdx.app.log("Splash", "ring");
             this.grub.hide();
-            ScreenNavigator.navigateTo(ConvictedScreen.MENU, FadeIn(1000), FadeOut(1000));
+            ScreenNavigator.navigateTo(ConvictedScreen.MENU, FadeIn(2000), FadeOut(1000));
         }
 
         if(this.timer.ring(100))
