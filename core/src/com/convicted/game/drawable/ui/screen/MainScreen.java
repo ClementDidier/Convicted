@@ -39,7 +39,6 @@ public class MainScreen extends ConvictedScreen
                 this.game.getConfiguration().getInteger(Configuration.PREFS_MAIN_BUTTON_START_ALIGN_X),
                 this.game.getConfiguration().getInteger(Configuration.PREFS_MAIN_BUTTON_START_ALIGN_Y),
                 this.game.getAssetManager().<Texture>get(Asset.START_BUTTON));
-        //this.buttonStart.setScale(5f);
         this.buttonStart.update(0);
 
         this.buttonStart.addListener(new ButtonClickListener()

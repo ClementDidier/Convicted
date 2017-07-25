@@ -39,6 +39,8 @@ public class Joystick extends Widget implements InputProcessor, Disposable
         this.joystickInnerPosition = new Vector2(x, y);
         this.renderer = new ShapeRenderer();
         this.pointerID = -1;
+
+        this.update(0);
     }
 
     public void setScale(float scaleXY)

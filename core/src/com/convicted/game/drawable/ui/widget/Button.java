@@ -31,6 +31,8 @@ public class Button extends Widget implements InputProcessor
         this.imageButton = new Sprite(texture);
         this.clickListenerList = new ArrayList<ButtonClickListener>();
         this.renderer = new ShapeRenderer();
+
+        this.update(0);
     }
 
     @Override

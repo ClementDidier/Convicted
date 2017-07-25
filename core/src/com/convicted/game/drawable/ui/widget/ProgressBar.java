@@ -18,6 +18,8 @@ public class ProgressBar extends Widget
         this.maximum = 100;
         this.bar = new Sprite(texture);
         this.bar.setPosition(x, y);
+
+        this.update(0);
     }
 
     public ProgressBar(Texture texture)

@@ -27,6 +27,8 @@ public abstract class Character extends Entity
         this.regionWidth = this.sprite.getWidth() / FRAMES_COUNT;
         this.isLookingLeftSide = DEFAULT_LOOKING_LEFT_SIDE;
         this.frameAnimationIndex = IDLE_FRAME_INDEX;
+
+        this.update(0);
     }
 
     @Override
