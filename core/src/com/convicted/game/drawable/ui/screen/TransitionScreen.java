@@ -1,9 +1,9 @@
-package com.convicted.game.drawable.ui.screen.transition;
+package com.convicted.game.drawable.ui.screen;
 
+import com.badlogic.gdx.Gdx;
 import com.convicted.game.ConvictedGame;
-import com.convicted.game.drawable.ui.screen.ConvictedBatch;
-import com.convicted.game.drawable.ui.screen.ConvictedScreen;
-import com.convicted.game.drawable.ui.screen.ScreenNavigator;
+import com.convicted.game.drawable.ui.screen.transition.SequenceTransition;
+import com.convicted.game.drawable.ui.screen.transition.Transition;
 
 public class TransitionScreen extends ConvictedScreen
 {
@@ -13,6 +13,7 @@ public class TransitionScreen extends ConvictedScreen
     public TransitionScreen(ConvictedGame game, Transition transition1, final ConvictedScreen nextScreen, Transition transition2)
     {
         super(game);
+        final ConvictedScreen prev = game.getScreen();
         this.current = game.getScreen();
 
         this.transition = new SequenceTransition(
@@ -38,6 +39,9 @@ public class TransitionScreen extends ConvictedScreen
                     @Override
                     public void initialize()
                     {
+                        // On libère les ressouces associées à l'écran précédent
+                        prev.uninitialize();
+
                         // Navigue vers l'écran suivant
                         ScreenNavigator.navigateTo(nextScreen);
                     }
@@ -54,6 +58,12 @@ public class TransitionScreen extends ConvictedScreen
 
     @Override
     public void load()
+    {
+        Gdx.input.setInputProcessor(null);
+    }
+
+    @Override
+    public void unload()
     {
         // Nothing
     }
@@ -74,6 +84,7 @@ public class TransitionScreen extends ConvictedScreen
     public void draw(ConvictedBatch batch)
     {
         this.current.draw(batch);
+        this.current.drawWidgets(batch);
     }
 
 }

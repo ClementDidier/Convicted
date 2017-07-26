@@ -3,6 +3,7 @@ package com.convicted.game.drawable.ui.screen;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.convicted.game.drawable.Drawable;
+import com.convicted.game.drawable.ui.widget.Widget;
 
 public class ConvictedBatch extends SpriteBatch
 {

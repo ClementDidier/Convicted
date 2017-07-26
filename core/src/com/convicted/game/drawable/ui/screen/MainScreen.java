@@ -18,7 +18,6 @@ public class MainScreen extends ConvictedScreen
 {
     private Button buttonStart;
     private Sprite background;
-    private Sprite sprite;
 
     public MainScreen(ConvictedGame game)
     {
@@ -38,7 +37,7 @@ public class MainScreen extends ConvictedScreen
                 this.game.getConfiguration().getInteger(Configuration.PREFS_MAIN_BUTTON_START_ALIGN_X),
                 this.game.getConfiguration().getInteger(Configuration.PREFS_MAIN_BUTTON_START_ALIGN_Y),
                 this.game.getAssetManager().<Texture>get(Asset.START_BUTTON));
-        this.buttonStart.update(0);
+        this.addWidget(this.buttonStart);
 
         this.buttonStart.addListener(new ButtonClickListener()
         {
@@ -48,29 +47,36 @@ public class MainScreen extends ConvictedScreen
                 ScreenNavigator.navigateTo(ConvictedScreen.GAME, FadeIn(1000), FadeOut(1000));
             }
         });
+    }
 
+    @Override
+    public void unload()
+    {
+        this.game.getAssetManager().unload(Asset.MAINSCREEN_BACKGROUND);
+        this.game.getAssetManager().unload(Asset.START_BUTTON);
+
+        this.removeWidget(this.buttonStart);
+    }
+
+    @Override
+    public void show()
+    {
         InputMultiplexer multiplexer = new InputMultiplexer();
         multiplexer.addProcessor(this.buttonStart);
         Gdx.input.setInputProcessor(multiplexer);
     }
 
     @Override
-    public void show()
-    {
-        Gdx.app.log("MenuScreen", "shown");
-    }
-
-    @Override
     public void update(float delta)
     {
-        this.buttonStart.update(delta);
+        //this.buttonStart.update(delta);
     }
 
     @Override
     public void draw(ConvictedBatch batch)
     {
         batch.draw(this.background);
-        batch.draw(this.buttonStart);
+        //batch.draw(this.buttonStart);
     }
 
     @Override

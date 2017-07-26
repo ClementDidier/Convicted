@@ -11,9 +11,13 @@ import com.convicted.game.data.Configuration;
 import com.convicted.game.drawable.entity.character.Monster;
 import com.convicted.game.drawable.environment.Environment;
 import com.convicted.game.drawable.ui.screen.effect.ShakeEffect;
+import com.convicted.game.drawable.ui.screen.transition.SequenceTransition;
 import com.convicted.game.drawable.ui.widget.Button;
 import com.convicted.game.drawable.ui.widget.Joystick;
 import com.convicted.game.utils.ButtonClickListener;
+
+import static com.convicted.game.drawable.ui.screen.transition.Transitions.FadeIn;
+import static com.convicted.game.drawable.ui.screen.transition.Transitions.FadeOut;
 
 public class GameScreen extends ConvictedScreen
 {
@@ -30,6 +34,10 @@ public class GameScreen extends ConvictedScreen
     @Override
     public void load()
     {
+        this.game.getAssetManager().load(Asset.START_BUTTON);
+        this.game.getAssetManager().load(Asset.GRUB);
+        this.game.getAssetManager().finishLoading();
+
         this.environment = new Environment(this.game);
 
         this.button = new Button(500, 300, this.game.getAssetManager().<Texture>get(Asset.START_BUTTON));
@@ -38,27 +46,38 @@ public class GameScreen extends ConvictedScreen
             public void onClick(InputEvent event, int x, int y)
             {
                 startEffect(new ShakeEffect(10f, 500f));
+                //ScreenNavigator.navigateTo(ConvictedScreen.MENU);//, FadeIn(1000f), FadeOut(1000f));
             }
         });
+        this.addWidget(this.button);
 
         this.joystick = new Joystick(
                 this.game.getConfiguration().getInteger(Configuration.PREFS_MOVE_JOYSTICK_ALIGN_X),
                 this.game.getConfiguration().getInteger(Configuration.PREFS_MOVE_JOYSTICK_ALIGN_Y));
+        this.addWidget(this.joystick);
 
         this.monster = new Monster(this.game.getAssetManager().<Texture>get(Asset.GRUB));
         this.monster.setController(new MonsterController(this.monster));
         this.monster.setPosition(500, 200);
+    }
 
-        InputMultiplexer inputMultiplexer = new InputMultiplexer();
-        inputMultiplexer.addProcessor(this.joystick.getProcessor());
-        inputMultiplexer.addProcessor(this.button);
-        Gdx.input.setInputProcessor(inputMultiplexer);
+    @Override
+    public void unload()
+    {
+        this.game.getAssetManager().unload(Asset.START_BUTTON);
+        this.game.getAssetManager().unload(Asset.GRUB);
+
+        this.removeWidget(this.button);
+        this.removeWidget(this.joystick);
     }
 
     @Override
     public void show()
     {
-
+        InputMultiplexer inputMultiplexer = new InputMultiplexer();
+        inputMultiplexer.addProcessor(this.joystick);
+        inputMultiplexer.addProcessor(this.button);
+        Gdx.input.setInputProcessor(inputMultiplexer);
     }
 
     @Override
@@ -66,7 +85,6 @@ public class GameScreen extends ConvictedScreen
     {
         this.environment.update(delta);
         this.monster.update(delta);
-        this.button.update(delta);
     }
 
     @Override
@@ -74,8 +92,6 @@ public class GameScreen extends ConvictedScreen
     {
         batch.draw(this.environment);
         batch.draw(this.monster);
-        batch.draw(this.joystick);
-        batch.draw(this.button);
     }
 
     @Override

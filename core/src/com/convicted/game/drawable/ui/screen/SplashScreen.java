@@ -33,7 +33,6 @@ public class SplashScreen extends ConvictedScreen
         this.game.getAssetManager().load(Asset.GRUB);
         this.game.getAssetManager().finishLoading();
 
-
         this.background = new Sprite(this.game.getAssetManager().<Texture>get(Asset.SPLASH_BACKGROUND));
 
         this.timer = new Timer();
@@ -44,6 +43,14 @@ public class SplashScreen extends ConvictedScreen
 
         this.grub = new Monster(this.game.getAssetManager().<Texture>get(Asset.GRUB));
         this.grub.setPosition(this.bar.getPosition().x, this.bar.getPosition().y);
+    }
+
+    @Override
+    public void unload()
+    {
+        this.game.getAssetManager().unload(Asset.SPLASH_BACKGROUND);
+        this.game.getAssetManager().unload(Asset.SPLASH_PROGRESS_BAR);
+        this.game.getAssetManager().unload(Asset.GRUB);
     }
 
     @Override

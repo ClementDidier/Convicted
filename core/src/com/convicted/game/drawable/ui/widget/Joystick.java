@@ -124,15 +124,6 @@ public class Joystick extends Widget implements InputProcessor, Disposable
         return this.joystickInnerPosition.dst(this.getPosition().x, this.getPosition().y) / this.effectArea;
     }
 
-    /**
-     * Obtient le processeur d'entrée du widget
-     * @return Le processeur d'entrée
-     */
-    public InputProcessor getProcessor()
-    {
-        return this;
-    }
-
     public boolean moved()
     {
         return getPushedValue() > 0;

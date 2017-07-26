@@ -5,6 +5,7 @@ import com.convicted.game.data.Configuration;
 import com.convicted.game.data.ConvictedAssetManager;
 import com.convicted.game.drawable.ui.screen.ConvictedScreen;
 import com.convicted.game.drawable.ui.screen.ScreenNavigator;
+import com.convicted.game.drawable.ui.screen.effect.ShakeEffect;
 
 public class ConvictedGame extends Game
 {

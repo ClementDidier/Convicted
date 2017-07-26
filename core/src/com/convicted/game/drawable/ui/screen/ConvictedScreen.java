@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.viewport.FitViewport;
@@ -11,6 +12,7 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 import com.convicted.game.ConvictedGame;
 import com.convicted.game.drawable.Drawable;
 import com.convicted.game.drawable.ui.screen.effect.ScreenEffect;
+import com.convicted.game.drawable.ui.widget.Widget;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -30,40 +32,56 @@ public abstract class ConvictedScreen implements com.badlogic.gdx.Screen, Drawab
     protected Viewport viewport;
     protected ConvictedGame game;
 
-    private boolean initialized;
+    private List<Widget> widgets;
     private List<ScreenEffect> effects;
     private Vector2 cameraOrigin;
+    private Matrix4 hudProjection;
+    private boolean initialized;
 
     protected ConvictedScreen(ConvictedGame game)
     {
         this.batch = new ConvictedBatch();
         this.camera = new OrthographicCamera();
-        this.viewport = new FitViewport(VIEWPORT.x, VIEWPORT.y, camera);
+        this.viewport = new FitViewport(VIEWPORT.x, VIEWPORT.y, this.camera);
         this.viewport.update(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), true);
         this.viewport.apply();
-        this.game = game;
 
-        this.initialized = false;
+        this.game = game;
+        this.widgets = new ArrayList<Widget>();
         this.effects = new ArrayList<ScreenEffect>();
+        this.cameraOrigin = new Vector2(this.camera.position.x, this.camera.position.y);
+        this.hudProjection = this.camera.combined.cpy();
+        this.hudProjection.setToOrtho2D(0, 0, VIEWPORT.x, VIEWPORT.y);
+        this.initialized = false;
     }
 
     /**
-     * Initialise l'écran une et une seule fois, et appel la fonction enfant de chargement
+     * Initialise l'écran et appel la fonction enfant de chargement
      */
     public final void initialize()
     {
         if(!this.initialized)
         {
             this.load();
-            this.cameraOrigin = new Vector2(this.camera.position.x, this.camera.position.y);
             this.initialized = true;
         }
     }
 
     /**
-     * Fonction enfant de chargement, appelée une et une seule fois à l'ouverture de l'écran, avant son affichage
+     * Fonction enfant de chargement, appelée à l'ouverture de l'écran, avant son affichage
      */
     public abstract void load();
+
+    /**
+     * Fonction enfant de déchargement, appelée à la fermeture de l'écran, après la fin d'affichage
+     */
+    public abstract void unload();
+
+    public final void uninitialize()
+    {
+        this.initialized = false;
+        this.unload();
+    }
 
     /**
      * Ajoute et lance un nouvel effet d'écran
@@ -72,6 +90,24 @@ public abstract class ConvictedScreen implements com.badlogic.gdx.Screen, Drawab
     public void startEffect(ScreenEffect effect)
     {
         this.effects.add(effect);
+    }
+
+    /**
+     * Ajoute un nouveau widget à l'écan actuel
+     * @param widget Le nouveau widget à ajouter
+     */
+    public synchronized void addWidget(Widget widget)
+    {
+        this.widgets.add(widget);
+    }
+
+    /**
+     * Supprime un widget de l'écran actuel
+     * @param widget Le widget à supprimer
+     */
+    public synchronized void removeWidget(Widget widget)
+    {
+        this.widgets.remove(widget);
     }
 
     @Override
@@ -83,16 +119,52 @@ public abstract class ConvictedScreen implements com.badlogic.gdx.Screen, Drawab
             this.camera.position.y = this.cameraOrigin.y;
 
             this.update(delta);
+            this.updateWidgets(delta);
             this.updateEffects(delta);
             this.camera.update();
 
             Gdx.gl.glClearColor(CLEAR_COLOR.r, CLEAR_COLOR.g, CLEAR_COLOR.b, CLEAR_COLOR.a);
             Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
 
+            // Dessin des objets de jeu
             batch.setProjectionMatrix(this.camera.combined);
             batch.begin();
             this.draw(batch);
             batch.end();
+
+            // Dessin des widgets
+            batch.setProjectionMatrix(this.hudProjection);
+            batch.begin();
+            this.drawWidgets(batch);
+            batch.end();
+        }
+    }
+
+    /**
+     * Dessine les widgets de l'écran actuel
+     * @param batch Le batch de dessin de l'écran actuel
+     */
+    protected synchronized void drawWidgets(ConvictedBatch batch)
+    {
+        Iterator<Widget> iterator = this.widgets.iterator();
+        while(iterator.hasNext())
+        {
+            Widget widget = iterator.next();
+            batch.draw(widget);
+        }
+    }
+
+    /**
+     * Mets à jours les widgets de l'écran actuel
+     * @param delta Le temps passé depuis la dernière mise à jour
+     */
+    protected synchronized void updateWidgets(float delta)
+    {
+        Iterator<Widget> iterator = this.widgets.iterator();
+        while(iterator.hasNext())
+        {
+            Widget widget = iterator.next();
+            widget.update(delta);
         }
     }
 
@@ -100,7 +172,7 @@ public abstract class ConvictedScreen implements com.badlogic.gdx.Screen, Drawab
      * Mets à jour les effets d'écran
      * @param delta Le temps passé en milisecondes depuis la dernière mise à jour
      */
-    private void updateEffects(float delta)
+    private synchronized void updateEffects(float delta)
     {
         Iterator<ScreenEffect> iterator = this.effects.iterator();
         while(iterator.hasNext())
@@ -124,6 +196,11 @@ public abstract class ConvictedScreen implements com.badlogic.gdx.Screen, Drawab
     {
         Vector3 vector = this.camera.unproject(new Vector3(x, y, 0));
         return new Vector2(vector.x, vector.y);
+    }
+
+    public boolean isInitialized()
+    {
+        return this.initialized;
     }
 
     @Override
