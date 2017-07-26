@@ -146,11 +146,9 @@ public abstract class ConvictedScreen implements com.badlogic.gdx.Screen, Drawab
      */
     protected synchronized void drawWidgets(ConvictedBatch batch)
     {
-        Iterator<Widget> iterator = this.widgets.iterator();
-        while(iterator.hasNext())
+        for(int i = 0; i < this.widgets.size(); i++)
         {
-            Widget widget = iterator.next();
-            batch.draw(widget);
+            this.widgets.get(i).draw(batch);
         }
     }
 
@@ -160,11 +158,9 @@ public abstract class ConvictedScreen implements com.badlogic.gdx.Screen, Drawab
      */
     protected synchronized void updateWidgets(float delta)
     {
-        Iterator<Widget> iterator = this.widgets.iterator();
-        while(iterator.hasNext())
+        for(int i = 0; i < this.widgets.size(); i++)
         {
-            Widget widget = iterator.next();
-            widget.update(delta);
+            this.widgets.get(i).update(delta);
         }
     }
 
@@ -174,15 +170,14 @@ public abstract class ConvictedScreen implements com.badlogic.gdx.Screen, Drawab
      */
     private synchronized void updateEffects(float delta)
     {
-        Iterator<ScreenEffect> iterator = this.effects.iterator();
-        while(iterator.hasNext())
+        for(int i = 0; i < this.effects.size(); i++)
         {
-            ScreenEffect effect = iterator.next();
-
-            if(effect.isFinished())
-                iterator.remove();
-            else
-                effect.update(delta, camera);
+            if(this.effects.get(i).isFinished())
+            {
+                this.effects.remove(i);
+                i--; // Evite de passer l'effet suivant (décalage effectué par le remove)
+            }
+            else this.effects.get(i).update(delta, camera);
         }
     }
 

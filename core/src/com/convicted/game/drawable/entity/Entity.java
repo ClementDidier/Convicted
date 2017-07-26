@@ -20,6 +20,7 @@ public abstract class Entity implements Drawable, Pool.Poolable
 
     public void setPosition(float x, float y)
     {
-        this.position = new Vector2(x, y);
+        this.position.x = x;
+        this.position.y = y;
     }
 }
