@@ -6,7 +6,7 @@ public enum Asset
 {
     SPLASH_BACKGROUND("splash.png", Texture.class),
     SPLASH_PROGRESS_BAR("progressbar.png", Texture.class),
-    ROGUE("rogue.png", Texture.class),
+    ROGUE("charset.png", Texture.class),
     GRUB("grub.png", Texture.class),
     START_BUTTON("buttonStart.png", Texture.class),
     BASIC_TILE("tileGround.png", Texture.class),

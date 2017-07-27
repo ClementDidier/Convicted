@@ -6,9 +6,11 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.convicted.game.ConvictedGame;
 import com.convicted.game.controller.MonsterController;
+import com.convicted.game.controller.PlayerController;
 import com.convicted.game.data.Asset;
 import com.convicted.game.data.Configuration;
 import com.convicted.game.drawable.entity.character.Monster;
+import com.convicted.game.drawable.entity.character.Player;
 import com.convicted.game.drawable.environment.Environment;
 import com.convicted.game.drawable.ui.screen.effect.ShakeEffect;
 import com.convicted.game.drawable.ui.screen.transition.SequenceTransition;
@@ -21,6 +23,7 @@ import static com.convicted.game.drawable.ui.screen.transition.Transitions.FadeO
 
 public class GameScreen extends ConvictedScreen
 {
+    private Player player;
     private Monster monster;
     private Joystick joystick;
     private Button button;
@@ -35,6 +38,7 @@ public class GameScreen extends ConvictedScreen
     public void load()
     {
         this.game.getAssetManager().load(Asset.START_BUTTON);
+        this.game.getAssetManager().load(Asset.ROGUE);
         this.game.getAssetManager().load(Asset.GRUB);
         this.game.getAssetManager().finishLoading();
 
@@ -56,6 +60,10 @@ public class GameScreen extends ConvictedScreen
                 this.game.getConfiguration().getInteger(Configuration.PREFS_MOVE_JOYSTICK_ALIGN_Y));
         this.addWidget(this.joystick);
 
+        this.player = new Player(this.game.getAssetManager().<Texture>get(Asset.ROGUE));
+        this.player.setController(new PlayerController(this.player, this.joystick, null));
+        this.player.setPosition(500, 200);
+
         this.monster = new Monster(this.game.getAssetManager().<Texture>get(Asset.GRUB));
         this.monster.setController(new MonsterController(this.monster));
         this.monster.setPosition(500, 200);
@@ -65,6 +73,7 @@ public class GameScreen extends ConvictedScreen
     public void unload()
     {
         this.game.getAssetManager().unload(Asset.START_BUTTON);
+        this.game.getAssetManager().unload(Asset.ROGUE);
         this.game.getAssetManager().unload(Asset.GRUB);
 
         this.removeWidget(this.button);
@@ -84,6 +93,7 @@ public class GameScreen extends ConvictedScreen
     public void update(float delta)
     {
         this.environment.update(delta);
+        this.player.update(delta);
         this.monster.update(delta);
     }
 
@@ -91,6 +101,7 @@ public class GameScreen extends ConvictedScreen
     public void draw(ConvictedBatch batch)
     {
         batch.draw(this.environment);
+        batch.draw(this.player);
         batch.draw(this.monster);
     }
 
