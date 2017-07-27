@@ -40,7 +40,7 @@ public class GameScreen extends ConvictedScreen
 
         this.environment = new Environment(this.game);
 
-        this.button = new Button(500, 300, this.game.getAssetManager().<Texture>get(Asset.START_BUTTON));
+        this.button = new Button(100, 600, this.game.getAssetManager().<Texture>get(Asset.START_BUTTON));
         this.button.addListener(new ButtonClickListener() {
             @Override
             public void onClick(InputEvent event, int x, int y)

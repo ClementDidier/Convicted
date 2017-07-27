@@ -77,8 +77,8 @@ public class SplashScreen extends ConvictedScreen
         {
             this.bar.setValue((int)(this.game.getAssetManager().getProgress() * 100));
             this.grub.setPosition(
-                    this.bar.getWidth() * this.bar.getPercent() + this.bar.getPosition().x + this.grub.getRegionWidth() * 3,
-                    this.bar.getPosition().y + this.grub.getRegionHeight());
+                    this.bar.getWidth() * this.bar.getPercent() + this.bar.getPosition().x + this.grub.getBounds().getWidth() * 3,
+                    this.bar.getPosition().y + this.grub.getBounds().getHeight());
             this.timer.reset();
         }
     }
