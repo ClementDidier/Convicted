@@ -16,8 +16,6 @@ import java.util.List;
 
 public class Button extends Widget implements InputProcessor
 {
-    private static final boolean debug = false;
-
     //private Skin buttonSkin;
     private Sprite imageButton;
     private ShapeRenderer renderer;
@@ -45,15 +43,6 @@ public class Button extends Widget implements InputProcessor
     public void draw(ConvictedBatch batch)
     {
         batch.draw(this.imageButton);
-
-        if(debug) {
-            Rectangle rectangle = this.imageButton.getBoundingRectangle();
-            this.renderer.setProjectionMatrix(batch.getProjectionMatrix());
-            this.renderer.begin(ShapeRenderer.ShapeType.Filled);
-            this.renderer.setColor(255f, 0, 0, 100f);
-            this.renderer.rect(rectangle.x, rectangle.y, rectangle.getWidth(), rectangle.getHeight());
-            this.renderer.end();
-        }
     }
 
     public void addListener(ButtonClickListener listener)

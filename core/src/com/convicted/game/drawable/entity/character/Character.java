@@ -3,6 +3,7 @@ package com.convicted.game.drawable.entity.character;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.convicted.game.controller.CharacterController;
@@ -13,6 +14,8 @@ import com.convicted.game.utils.Vector;
 
 public abstract class Character extends Entity
 {
+    private final static boolean DEBUG = false;
+
     private final static boolean DEFAULT_LOOKING_LEFT_SIDE = false;
     private final static int FRAMES_COUNT = 3;
     private final static int IDLE_FRAME_INDEX = 1;
@@ -31,6 +34,8 @@ public abstract class Character extends Entity
     private CharacterController controller;
     private Timer inactivityTimer;
 
+    private ShapeRenderer shapeRenderer;
+
     public Character(Texture texture)
     {
         super();
@@ -46,6 +51,8 @@ public abstract class Character extends Entity
         this.deltaY = 0;
         this.inactivityTimer = new Timer();
         this.update(0);
+
+        this.shapeRenderer = new ShapeRenderer();
     }
 
     @Override
@@ -90,6 +97,17 @@ public abstract class Character extends Entity
     public void draw(ConvictedBatch batch)
     {
         batch.draw(this.sprite);
+
+        if(DEBUG) {
+            batch.end();
+            Rectangle r = this.sprite.getBoundingRectangle();
+            shapeRenderer.setProjectionMatrix(batch.getProjectionMatrix());
+            shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
+            shapeRenderer.setColor(255f, 0, 0, 100f);
+            shapeRenderer.rect(r.x, r.y, r.width, r.height);
+            shapeRenderer.end();
+            batch.begin();
+        }
     }
 
     @Override
