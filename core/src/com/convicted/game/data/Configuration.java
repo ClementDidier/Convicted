@@ -14,6 +14,8 @@ public class Configuration
     public final static String PREFS_NAME = "ConvictedPrefs";
     public final static String PREFS_MOVE_JOYSTICK_ALIGN_X = "MoveJoystickAlignX";
     public final static String PREFS_MOVE_JOYSTICK_ALIGN_Y = "MoveJoystickAlignY";
+    public final static String PREFS_FIRE_JOYSTICK_ALIGN_X = "FireJoystickAlignX";
+    public final static String PREFS_FIRE_JOYSTICK_ALIGN_Y = "FireJoystickAlignY";
     public final static String PREFS_SPLASH_PROGRESS_BAR_ALIGN_X = "SplashProgressBarAlignX";
     public final static String PREFS_SPLASH_PROGRESS_BAR_ALIGN_Y = "SplashProgressBarAlignY";
     public final static String PREFS_MAIN_BUTTON_START_ALIGN_X = "MainButtonStartAlignX";
@@ -63,6 +65,12 @@ public class Configuration
 
         //if(!this.prefs.contains(PREFS_MOVE_JOYSTICK_ALIGN_Y))
             this.prefs.putInteger(PREFS_MOVE_JOYSTICK_ALIGN_Y, (int)(ConvictedScreen.VIEWPORT.y / 5f));
+
+        //if(!this.prefs.contains(PREFS_MOVE_JOYSTICK_ALIGN_X))
+        this.prefs.putInteger(PREFS_FIRE_JOYSTICK_ALIGN_X, (int)(ConvictedScreen.VIEWPORT.x * 6f / 7f));
+
+        //if(!this.prefs.contains(PREFS_MOVE_JOYSTICK_ALIGN_Y))
+        this.prefs.putInteger(PREFS_FIRE_JOYSTICK_ALIGN_Y, (int)(ConvictedScreen.VIEWPORT.y / 5f));
 
         //if(!this.prefs.contains(PREFS_SPLASH_PROGRESS_BAR_ALIGN_X))
             this.prefs.putInteger(PREFS_SPLASH_PROGRESS_BAR_ALIGN_X, (int)(ConvictedScreen.VIEWPORT.x / 2f - 655f / 2f));

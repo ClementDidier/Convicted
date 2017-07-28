@@ -1,6 +1,7 @@
 package com.convicted.game.controller;
 
 import com.badlogic.gdx.Gdx;
+import com.convicted.game.ConvictedRun;
 import com.convicted.game.drawable.entity.character.Character;
 import com.convicted.game.drawable.ui.screen.ConvictedScreen;
 import com.convicted.game.utils.Timer;
@@ -16,9 +17,9 @@ public class MonsterController extends CharacterController
     private Timer timer;
     private int v, h;
 
-    public MonsterController(Character character)
+    public MonsterController(Character character, ConvictedRun world)
     {
-        super(character);
+        super(character, world);
         this.random = new Random();
         this.timer = new Timer();
         this.v = 0;
@@ -40,7 +41,8 @@ public class MonsterController extends CharacterController
 
             float x = this.character.getPosition().x + this.h;
             float y = this.character.getPosition().y + this.v;
-            Gdx.app.log("MoveTo", "x : " + x + " ; y : " + y);
+
+            //Gdx.app.log("MoveTo", "x : " + x + " ; y : " + y);
             //Gdx.app.log("Moving", "--- Character Position [x : " + this.character.getPosition().x + " ; y : " + this.character.getPosition().y);
             this.character.moveTo(
                     (x >= 0) ? ((x <= ConvictedScreen.VIEWPORT.x) ? x : ConvictedScreen.VIEWPORT.x) : 0,

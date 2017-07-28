@@ -1,5 +1,6 @@
 package com.convicted.game.drawable.entity.projectile;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Pool;
 import com.convicted.game.drawable.entity.Entity;
@@ -23,6 +24,15 @@ public class ProjectileManager implements EntityManager
             }
         };
 
+    }
+
+    public void fireProjectile(float originX, float originY, float directionX, float directionY, float speed)
+    {
+        Projectile projectile = this.projectilePool.obtain();
+        projectile.setPosition(originX, originY);
+        projectile.setDirection(directionX, directionY);
+        projectile.setSpeed(speed);
+        this.activesProjectiles.add(projectile);
     }
 
     @Override
@@ -56,13 +66,33 @@ public class ProjectileManager implements EntityManager
     }
 
     @Override
-    public void updateAll(float delta) {
+    public void updateAll(float delta)
+    {
+        for(int i = 0; i < this.activesProjectiles.size; i++)
+        {
+            this.activesProjectiles.get(i).update(delta);
 
+            if(!this.activesProjectiles.get(i).isAlive())
+            {
+                this.projectilePool.free(this.activesProjectiles.get(i));
+                this.activesProjectiles.removeIndex(i);
+                i--;
+            }
+        }
     }
 
     @Override
-    public void drawAll(ConvictedBatch batch) {
-
+    public void drawAll(ConvictedBatch batch)
+    {
+        for(int i = 0; i < this.activesProjectiles.size; i++)
+        {
+            this.activesProjectiles.get(i).draw(batch);
+        }
+    }
+    
+    public int getActivesProjectilesCount()
+    {
+        return this.activesProjectiles.size;
     }
 
     @Override
