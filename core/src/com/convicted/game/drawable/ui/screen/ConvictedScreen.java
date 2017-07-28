@@ -15,7 +15,6 @@ import com.convicted.game.drawable.ui.screen.effect.ScreenEffect;
 import com.convicted.game.drawable.ui.widget.Widget;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 public abstract class ConvictedScreen implements com.badlogic.gdx.Screen, Drawable
@@ -196,6 +195,11 @@ public abstract class ConvictedScreen implements com.badlogic.gdx.Screen, Drawab
     public boolean isInitialized()
     {
         return this.initialized;
+    }
+
+    public static boolean contains(float x, float y)
+    {
+        return x >= 0 && x < VIEWPORT.x && y >= 0 && y < VIEWPORT.y;
     }
 
     @Override

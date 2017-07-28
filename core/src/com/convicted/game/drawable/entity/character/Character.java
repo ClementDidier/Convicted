@@ -12,9 +12,9 @@ import com.convicted.game.utils.Timer;
 
 public abstract class Character extends Entity
 {
-    private final static boolean DEBUG = true;
+    private final static boolean DEBUG = false;
 
-    public final static float DEFAULT_SPEED = 40f;
+    public final static float DEFAULT_SPEED = 50f;
 
     private final static float MOVEMENT_ERROR_RATE = 0.05f; // 5% de marge d'erreur pour le déplacement
     private final static boolean DEFAULT_LOOKING_LEFT_SIDE = false;
@@ -35,6 +35,7 @@ public abstract class Character extends Entity
     private Timer inactivityTimer;
 
     private float fireCooldown;
+    private float accuracy;
 
     private ShapeRenderer shapeRenderer;
 
@@ -51,10 +52,11 @@ public abstract class Character extends Entity
         this.speed = DEFAULT_SPEED;
         this.deltaXY = 0;
         this.displacementDistance = 0f;
-        this.inactivityTimer = new Timer();
+        this.inactivityTimer = new Timer(INACTIVITY_TIMEOUT);
         this.update(0);
 
-        this.fireCooldown = 10f;
+        this.fireCooldown = 700f;
+        this.accuracy = 0.7f;
 
         this.shapeRenderer = new ShapeRenderer();
     }
@@ -152,7 +154,7 @@ public abstract class Character extends Entity
         if(!this.isMoving)
         {
             this.inactivityTimer.update(delta);
-            if(this.inactivityTimer.ring(INACTIVITY_TIMEOUT))
+            if(this.inactivityTimer.ring())
             {
                 this.frameAnimationIndex = IDLE_FRAME_INDEX;
                 this.inactivityTimer.reset();
@@ -171,11 +173,6 @@ public abstract class Character extends Entity
     public void moveBy(float x, float y)
     {
         this.moveTo(this.getPosition().x + x, this.getPosition().y + y);
-    }
-
-    public float getFireCooldown()
-    {
-        return this.fireCooldown;
     }
 
     public void setScale(float scaleXY)
@@ -216,5 +213,15 @@ public abstract class Character extends Entity
     public float getSpeed()
     {
         return this.speed;
+    }
+
+    public float getFireCooldown()
+    {
+        return this.fireCooldown;
+    }
+
+    public float getAccuracy()
+    {
+        return this.accuracy;
     }
 }

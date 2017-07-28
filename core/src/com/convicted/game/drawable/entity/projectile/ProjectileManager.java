@@ -1,6 +1,5 @@
 package com.convicted.game.drawable.entity.projectile;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Pool;
 import com.convicted.game.drawable.entity.Entity;
@@ -32,6 +31,14 @@ public class ProjectileManager implements EntityManager
         projectile.setPosition(originX, originY);
         projectile.setDirection(directionX, directionY);
         projectile.setSpeed(speed);
+        this.activesProjectiles.add(projectile);
+    }
+
+    public void fireProjectile(float originX, float originY, float directionX, float directionY)
+    {
+        Projectile projectile = this.projectilePool.obtain();
+        projectile.setPosition(originX, originY);
+        projectile.setDirection(directionX, directionY);
         this.activesProjectiles.add(projectile);
     }
 
