@@ -17,11 +17,15 @@ import com.convicted.game.drawable.ui.widget.Button;
 import com.convicted.game.drawable.ui.widget.Joystick;
 import com.convicted.game.utils.ButtonClickListener;
 
+import java.util.Random;
+
 public class GameScreen extends ConvictedScreen
 {
     private ConvictedRun world;
     private Joystick movementJoystick, fireJoystick;
     private Button button;
+
+    private Random random;
 
     public GameScreen(ConvictedGame game)
     {
@@ -56,17 +60,19 @@ public class GameScreen extends ConvictedScreen
         player.setPosition(500, 200);
         this.world.addEntity(player);
 
+        this.random = new Random();
+
         this.button.addListener(new ButtonClickListener() {
             @Override
             public void onClick(InputEvent event, int x, int y)
             {
                 startEffect(new ShakeEffect(10f, 500f));
-
-                for(int i = 0; i < 100; i++)
+                int d = random.nextInt(360);
+                for(int i = 0; i < 10; i++)
                     world.projectileManager.fireProjectile(
                             player.getPosition().x + player.getBounds().getWidth() / 2,
                             player.getPosition().y + player.getBounds().getHeight() / 2,
-                            (float)Math.cos(i), (float)Math.sin(i), 200);
+                            (float)Math.cos(i + d), (float)Math.sin(i + d));
                 //ScreenNavigator.navigateTo(ConvictedScreen.MENU);//, FadeIn(1000f), FadeOut(1000f));
             }
         });

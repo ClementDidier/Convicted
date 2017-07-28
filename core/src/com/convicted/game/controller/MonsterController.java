@@ -1,6 +1,5 @@
 package com.convicted.game.controller;
 
-import com.badlogic.gdx.Gdx;
 import com.convicted.game.ConvictedRun;
 import com.convicted.game.drawable.entity.character.Character;
 import com.convicted.game.drawable.ui.screen.ConvictedScreen;
@@ -42,8 +41,6 @@ public class MonsterController extends CharacterController
             float x = this.character.getPosition().x + this.h;
             float y = this.character.getPosition().y + this.v;
 
-            //Gdx.app.log("MoveTo", "x : " + x + " ; y : " + y);
-            //Gdx.app.log("Moving", "--- Character Position [x : " + this.character.getPosition().x + " ; y : " + this.character.getPosition().y);
             this.character.moveTo(
                     (x >= 0) ? ((x <= ConvictedScreen.VIEWPORT.x) ? x : ConvictedScreen.VIEWPORT.x) : 0,
                     (y >= 0) ? ((y <= ConvictedScreen.VIEWPORT.y) ? y : ConvictedScreen.VIEWPORT.y) : 0);

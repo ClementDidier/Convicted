@@ -35,7 +35,7 @@ public class SplashScreen extends ConvictedScreen
 
         this.background = new Sprite(this.game.getAssetManager().<Texture>get(Asset.SPLASH_BACKGROUND));
 
-        this.timer = new Timer();
+        this.timer = new Timer(100);
         this.bar = new ProgressBar(this.game.getAssetManager().<Texture>get(Asset.SPLASH_PROGRESS_BAR));
         this.bar.setPosition(
                 this.game.getConfiguration().getInteger(Configuration.PREFS_SPLASH_PROGRESS_BAR_ALIGN_X),
@@ -67,13 +67,13 @@ public class SplashScreen extends ConvictedScreen
         this.grub.update(delta);
         this.game.getAssetManager().update((int)(delta * 1000));
 
-        if(this.bar.isComplete() && this.timer.ring(100))
+        if(this.bar.isComplete() && this.timer.ring())
         {
             this.grub.hide();
             ScreenNavigator.navigateTo(ConvictedScreen.MENU, FadeIn(2000), FadeOut(1000));
         }
 
-        if(this.timer.ring(100))
+        if(this.timer.ring())
         {
             this.bar.setValue((int)(this.game.getAssetManager().getProgress() * 100));
             this.grub.setPosition(
