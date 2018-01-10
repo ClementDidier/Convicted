@@ -1,0 +1,22 @@
+{
+  "name": "convicted-server",
+  "version": "0.0.1",
+  "description": "Serveur d'obtention et création de salles de jeu (lobby) multijoueurs pour le jeu smartphone Convicted",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "Serveur",
+    "Convicted"
+  ],
+  "author": "Clément DIDIER",
+  "license": "GPL-3.0",
+  "dependencies": {
+    "body-parser": "^1.18.2",
+    "express": "^4.16.2",
+    "jsonwebtoken": "^8.1.0",
+    "socketio": "^1.0.0"
+  }
+}
